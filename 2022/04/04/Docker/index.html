@@ -1,0 +1,546 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  
+  <title>Hexo</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="Docker1、Docker简介​        Docker 是一个开源的应用容器引擎，基于 Go 语言 并遵从 Apache2.0 协议开源。 ​        Docker 可以让开发者打包他们的应用以及依赖包到一个轻量级、可移植的容器中，然后发布到任何流行的 Linux 机器上，也可以实现虚拟化。 Docker应用场景：  Web 应用的自动化打包和发布。 自动化测试和持续集成、发布。 在">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Hexo">
+<meta property="og:url" content="http://example.com/2022/04/04/Docker/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="Docker1、Docker简介​        Docker 是一个开源的应用容器引擎，基于 Go 语言 并遵从 Apache2.0 协议开源。 ​        Docker 可以让开发者打包他们的应用以及依赖包到一个轻量级、可移植的容器中，然后发布到任何流行的 Linux 机器上，也可以实现虚拟化。 Docker应用场景：  Web 应用的自动化打包和发布。 自动化测试和持续集成、发布。 在">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://www.runoob.com/wp-content/uploads/2016/04/576507-docker1.png">
+<meta property="og:image" content="https://www.runoob.com/wp-content/uploads/2016/05/CV09QJMI2fb7L2k0.png">
+<meta property="og:image" content="https://www.runoob.com/wp-content/uploads/2017/12/1513668234-6433-20171206211858191-1177002365.png">
+<meta property="article:published_time" content="2022-04-04T08:58:57.740Z">
+<meta property="article:modified_time" content="2022-04-02T06:11:46.247Z">
+<meta property="article:author" content="John Doe">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://www.runoob.com/wp-content/uploads/2016/04/576507-docker1.png">
+  
+    <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-source-code-pro@0.0.71/index.min.css">
+
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+<meta name="generator" content="Hexo 6.1.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Hexo</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://example.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main"><article id="post-Docker" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2022/04/04/Docker/" class="article-date">
+  <time class="dt-published" datetime="2022-04-04T08:58:57.740Z" itemprop="datePublished">2022-04-04</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h1 id="Docker"><a href="#Docker" class="headerlink" title="Docker"></a>Docker</h1><h2 id="1、Docker简介"><a href="#1、Docker简介" class="headerlink" title="1、Docker简介"></a>1、Docker简介</h2><p>​        Docker 是一个开源的应用容器引擎，基于 <a target="_blank" rel="noopener" href="https://www.runoob.com/go/go-tutorial.html">Go 语言</a> 并遵从 Apache2.0 协议开源。</p>
+<p>​        Docker 可以让开发者打包他们的应用以及依赖包到一个轻量级、可移植的容器中，然后发布到任何流行的 Linux 机器上，也可以实现虚拟化。</p>
+<p><strong>Docker应用场景：</strong></p>
+<ul>
+<li>Web 应用的自动化打包和发布。</li>
+<li>自动化测试和持续集成、发布。</li>
+<li>在服务型环境中部署和调整数据库或其他的后台应用。</li>
+<li>从头编译或者扩展现有的 OpenShift 或 Cloud Foundry 平台来搭建自己的 PaaS 环境。</li>
+</ul>
+<p>Docker 官网：<a target="_blank" rel="noopener" href="https://www.docker.com/">https://www.docker.com</a></p>
+<p>Github Docker 源码：<a target="_blank" rel="noopener" href="https://github.com/docker/docker-ce">https://github.com/docker/docker-ce</a></p>
+<p>Docker Registry：Docker Hub(<a target="_blank" rel="noopener" href="https://hub.docker.com/">https://hub.docker.com</a>)</p>
+<h2 id="2、Docker架构"><a href="#2、Docker架构" class="headerlink" title="2、Docker架构"></a>2、Docker架构</h2><h3 id="1、镜像（image）"><a href="#1、镜像（image）" class="headerlink" title="1、镜像（image）"></a>1、镜像（image）</h3><p>​                类似于一个文件系统，比如官方镜像 ubuntu:16.04 就包含了完整的一套 Ubuntu16.04 最小系统的 root         文件系统。</p>
+<h3 id="2、容器（container"><a href="#2、容器（container" class="headerlink" title="2、容器（container)"></a>2、容器（container)</h3><p>​                镜像（Image）和容器（Container）的关系，就像是面向对象程序设计中的类和实例一样，镜像是静态        的定义，容器是镜像运行时的实体。容器可以被创建、启动、停止、删除、暂停等。    </p>
+<h3 id="3、仓库（repository"><a href="#3、仓库（repository" class="headerlink" title="3、仓库（repository)"></a>3、仓库（repository)</h3><p>​                仓库可看成一个代码控制中心，用来保存镜像。</p>
+<h3 id="4、容器与镜像区别"><a href="#4、容器与镜像区别" class="headerlink" title="4、容器与镜像区别"></a>4、容器与镜像区别</h3><p>​                Docker 容器通过 Docker 镜像来创建。</p>
+<p>​                容器与镜像的关系类似于面向对象编程中的对象(实例)与类。</p>
+<h3 id="5、整体架构"><a href="#5、整体架构" class="headerlink" title="5、整体架构"></a>5、整体架构</h3><p>​                <img src="https://www.runoob.com/wp-content/uploads/2016/04/576507-docker1.png" alt="img"></p>
+<table>
+<thead>
+<tr>
+<th align="left">概念</th>
+<th align="left">说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">Docker 镜像(Images)</td>
+<td align="left">Docker 镜像是用于创建 Docker 容器的模板，比如 Ubuntu 系统。</td>
+</tr>
+<tr>
+<td align="left">Docker 容器(Container)</td>
+<td align="left">容器是独立运行的一个或一组应用，是镜像运行时的实体。</td>
+</tr>
+<tr>
+<td align="left">Docker 客户端(Client)</td>
+<td align="left">Docker 客户端通过命令行或者其他工具使用 Docker SDK (<a target="_blank" rel="noopener" href="https://docs.docker.com/develop/sdk/">https://docs.docker.com/develop/sdk/</a>) 与 Docker 的守护进程通信。</td>
+</tr>
+<tr>
+<td align="left">Docker 主机(Host)</td>
+<td align="left">一个物理或者虚拟的机器用于执行 Docker 守护进程和容器。</td>
+</tr>
+<tr>
+<td align="left">Docker Registry</td>
+<td align="left">Docker 仓库用来保存镜像，可以理解为代码控制中的代码仓库。Docker Hub(<a target="_blank" rel="noopener" href="https://hub.docker.com/">https://hub.docker.com</a>) 提供了庞大的镜像集合供使用。一个 Docker Registry 中可以包含多个仓库（Repository）；每个仓库可以包含多个标签（Tag）；每个标签对应一个镜像。通常，一个仓库会包含同一个软件不同版本的镜像，而标签就常用于对应该软件的各个版本。我们可以通过 <strong>&lt;仓库名&gt;:&lt;标签&gt;</strong> 的格式来指定具体是这个软件哪个版本的镜像。如果不给出标签，将以 <strong>latest</strong> 作为默认标签。</td>
+</tr>
+<tr>
+<td align="left">Docker Machine</td>
+<td align="left">Docker Machine是一个简化Docker安装的命令行工具，通过一个简单的命令行即可在相应的平台上安装Docker，比如VirtualBox、 Digital Ocean、Microsoft Azure。</td>
+</tr>
+</tbody></table>
+<h2 id="3、安装"><a href="#3、安装" class="headerlink" title="3、安装"></a>3、安装</h2><h3 id="1、ubuntu"><a href="#1、ubuntu" class="headerlink" title="1、ubuntu"></a>1、ubuntu</h3><p>​    使用脚本安装：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">curl -fsSL https://get.docker.com | bash -s docker --mirror Aliyun</span><br></pre></td></tr></table></figure>
+
+<h3 id="2、Windows安装"><a href="#2、Windows安装" class="headerlink" title="2、Windows安装"></a>2、Windows安装</h3><p>​    Docker 必须部署在 Linux 内核的系统上。如果其他系统想部署 Docker 就必须安装一个虚拟 Linux 环境。</p>
+<p>​    <img src="https://www.runoob.com/wp-content/uploads/2016/05/CV09QJMI2fb7L2k0.png" alt="img"></p>
+<p>​    Docker Desktop 是 Docker 在 Windows 10 和 macOS 操作系统上的官方安装方式，这个方法依然属于先在虚拟机中安装 Linux 然后再安装 Docker 的方法。</p>
+<p>Docker Desktop 官方下载地址： <a target="_blank" rel="noopener" href="https://hub.docker.com/editions/community/docker-ce-desktop-windows">https://hub.docker.com/editions/community/docker-ce-desktop-windows</a></p>
+<p>​    开启Hyper-V功能（仅win10系统用户）：如下图</p>
+<p>​    <strong>注意：</strong>虚拟机一旦启用，QEMU、VirtualBox 或 VMWare Workstation 15 及以下版本将无法使用！</p>
+<p><img src="https://www.runoob.com/wp-content/uploads/2017/12/1513668234-6433-20171206211858191-1177002365.png" alt="img"></p>
+<h2 id="4、Docker镜像加速"><a href="#4、Docker镜像加速" class="headerlink" title="4、Docker镜像加速"></a>4、Docker镜像加速</h2><ul>
+<li><p>科大镜像：<strong><a target="_blank" rel="noopener" href="https://docker.mirrors.ustc.edu.cn/">https://docker.mirrors.ustc.edu.cn/</a></strong></p>
+</li>
+<li><p>网易：<strong><a target="_blank" rel="noopener" href="https://hub-mirror.c.163.com/">https://hub-mirror.c.163.com/</a></strong></p>
+</li>
+<li><p>阿里云：<strong>https:&#x2F;&#x2F;&lt;你的ID&gt;.mirror.aliyuncs.com</strong></p>
+</li>
+<li><p>七牛云加速器：<strong><a target="_blank" rel="noopener" href="https://reg-mirror.qiniu.com/">https://reg-mirror.qiniu.com</a></strong></p>
+<p>阿里云镜像获取地址：<a target="_blank" rel="noopener" href="https://cr.console.aliyun.com/cn-hangzhou/instances/mirrors%EF%BC%8C%E7%99%BB%E9%99%86%E5%90%8E%EF%BC%8C%E5%B7%A6%E4%BE%A7%E8%8F%9C%E5%8D%95%E9%80%89%E4%B8%AD%E9%95%9C%E5%83%8F%E5%8A%A0%E9%80%9F%E5%99%A8%E5%B0%B1%E5%8F%AF%E4%BB%A5%E7%9C%8B%E5%88%B0%E4%BD%A0%E7%9A%84%E4%B8%93%E5%B1%9E%E5%9C%B0%E5%9D%80%E4%BA%86%E3%80%82">https://cr.console.aliyun.com/cn-hangzhou/instances/mirrors，登陆后，左侧菜单选中镜像加速器就可以看到你的专属地址了。</a></p>
+<h3 id="Ubuntu14-04、Debian7Wheezy"><a href="#Ubuntu14-04、Debian7Wheezy" class="headerlink" title="Ubuntu14.04、Debian7Wheezy"></a><strong>Ubuntu14.04、Debian7Wheezy</strong></h3><p>对于使用 upstart 的系统而言，编辑 &#x2F;etc&#x2F;default&#x2F;docker 文件，在其中的 DOCKER_OPTS 中配置加速器地址：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">DOCKER_OPTS=<span class="string">&quot;--registry-mirror=https://registry.docker-cn.com&quot;</span></span><br></pre></td></tr></table></figure></li>
+</ul>
+<p>​        重启服务：</p>
+<p>​                $ sudo service docker restart</p>
+<h3 id="Ubuntu16-04-、Debian8-、CentOS7"><a href="#Ubuntu16-04-、Debian8-、CentOS7" class="headerlink" title="Ubuntu16.04+、Debian8+、CentOS7"></a><strong>Ubuntu16.04+、Debian8+、CentOS7</strong></h3><p>​                对于使用 systemd 的系统，请在 &#x2F;etc&#x2F;docker&#x2F;daemon.json 中写入如下内容（如果文件不存在请新建该        文件）：    </p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#123;&quot;registry-mirrors&quot;:[&quot;https://reg-mirror.qiniu.com/&quot;]&#125;</span><br></pre></td></tr></table></figure>
+
+<p>​            之后重新启动服务：</p>
+<p>​                    <code>sudo systemctl daemon-reload</code><br>​                    <code>sudo systemctl restart docker</code></p>
+<h3 id="Windows-10"><a href="#Windows-10" class="headerlink" title="Windows 10"></a><strong>Windows 10</strong></h3><p>​        对于使用 Windows 10 的系统，在系统右下角托盘 Docker 图标内右键菜单选择 Settings，打开配置窗口后左侧导航菜单选择 Daemon。在 Registrymirrors 一栏中填写加速器地址 <strong><a target="_blank" rel="noopener" href="https://docker.mirrors.ustc.edu.cn/">https://docker.mirrors.ustc.edu.cn/</a></strong> ，之后点击 Apply 保存后 Docker 就会重启并应用配置的镜像地址了。</p>
+<h3 id="检查加速器是否生效："><a href="#检查加速器是否生效：" class="headerlink" title="检查加速器是否生效："></a><strong>检查加速器是否生效：</strong></h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ docker info</span><br><span class="line">Registry Mirrors:</span><br><span class="line">    https://reg-mirror.qiniu.com</span><br></pre></td></tr></table></figure>
+
+<h2 id="5、Docker使用"><a href="#5、Docker使用" class="headerlink" title="5、Docker使用"></a>5、Docker使用</h2><h3 id="docker-hello-word"><a href="#docker-hello-word" class="headerlink" title="docker hello word"></a>docker hello word</h3><h4 id="1-1-hello-word"><a href="#1-1-hello-word" class="headerlink" title="1.1 hello word"></a>1.1 hello word</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker run ubuntu:15.10 /bin/echo &quot;Hello world&quot;</span><br></pre></td></tr></table></figure>
+
+<p>​        各个参数解析：</p>
+<ul>
+<li><strong>docker:</strong> Docker 的二进制执行文件。</li>
+<li><strong>run:</strong> 与前面的 docker 组合来运行一个容器。</li>
+<li><strong>ubuntu:15.10</strong> 指定要运行的镜像，Docker 首先从本地主机上查找镜像是否存在，如果不存在，Docker 就会从镜像仓库 Docker Hub 下载公共镜像。</li>
+<li><strong>&#x2F;bin&#x2F;echo “Hello world”:</strong> 在启动的容器里执行的命令（该输入部分即为在Ubuntu命令行中的输入）</li>
+</ul>
+<h4 id="1-2-运行交互式的容器"><a href="#1-2-运行交互式的容器" class="headerlink" title="1.2 运行交互式的容器"></a>1.2 运行交互式的容器</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">runoob@runoob:~$ docker run -i -t ubuntu:15.10 /bin/bash</span><br><span class="line">root@0123ce188bd8:/#</span><br></pre></td></tr></table></figure>
+
+<p>​            交互式的容器：本机与docker镜像的切换。</p>
+<ul>
+<li><strong>-t:</strong> 在新容器内指定一个伪终端或终端。</li>
+<li><strong>-i:</strong> 允许你对容器内的标准输入 (STDIN) 进行交互。</li>
+</ul>
+<p>​            我们可以通过运行 <strong>exit</strong> 命令或者使用 <strong>CTRL+D</strong> 来退出容器。</p>
+<h4 id="1-3-启动容器（后台形式）"><a href="#1-3-启动容器（后台形式）" class="headerlink" title="1.3 启动容器（后台形式）"></a>1.3 启动容器（后台形式）</h4><p>​            使用以下命令创建一个以进程方式运行的容器</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">runoob@runoob:~$ docker run -d ubuntu:15.10 /bin/sh -c &quot;while true; do echo hello world; sleep 1; done&quot;</span><br><span class="line">2b1b7a428627c51ab8810d541d759f072b4fc75487eed05812646b8534a2fe63</span><br></pre></td></tr></table></figure>
+
+<p>​            我们需要确认容器有在运行，可以通过 <strong>docker ps</strong> 来查看：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">runoob@runoob:~$ docker ps</span><br><span class="line">CONTAINER ID        IMAGE                  COMMAND              ...  </span><br><span class="line">5917eac21c36        ubuntu:15.10           &quot;/bin/sh -c &#x27;while t…&quot;    ...</span><br></pre></td></tr></table></figure>
+
+<p>​        输出详情介绍：</p>
+<p>​            <strong>CONTAINER ID:</strong> 容器 ID。</p>
+<p>​            <strong>IMAGE:</strong> 使用的镜像。</p>
+<p>​            <strong>COMMAND:</strong> 启动容器时运行的命令。</p>
+<p>​            <strong>CREATED:</strong> 容器的创建时间。</p>
+<p>​            <strong>STATUS:</strong> 容器状态。状态有7种：</p>
+<p>created（已创建）restarting（重启中）running 或 Up（运行中）removing（迁移中）</p>
+<p>paused（暂停）exited（停止）dead（死亡）</p>
+<p>​            <strong>PORTS:</strong> 容器的端口信息和使用的连接类型（tcp\udp）。</p>
+<p>​            <strong>NAMES:</strong> 自动分配的容器名称。</p>
+<p>​        在宿主主机内使用 <strong>docker logs</strong> 命令，查看容器内的标准输出：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">runoob@runoob:~$ docker logs 2b1b7a428627</span><br></pre></td></tr></table></figure>
+
+<p>​        我们使用 <strong>docker stop</strong> 命令来停止容器:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker stop &lt;id/name&gt;</span><br></pre></td></tr></table></figure>
+
+<h2 id="6、Docker容器的使用"><a href="#6、Docker容器的使用" class="headerlink" title="6、Docker容器的使用"></a>6、Docker容器的使用</h2><h3 id="1-客户端帮助文档"><a href="#1-客户端帮助文档" class="headerlink" title="1.客户端帮助文档"></a>1.客户端帮助文档</h3><p>​            直接输入 docker 命令来查看到 Docker 客户端的所有命令选项。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">runoob@runoob:~# docker</span><br></pre></td></tr></table></figure>
+
+<p>​            通过命令 <strong>docker command –help</strong> 更深入的了解指定的 Docker 命令使用方法。</p>
+<p>​    例如我们要查看 <strong>docker stats</strong> 指令的具体使用方法：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">runoob@runoob:~# docker stats --help</span><br></pre></td></tr></table></figure>
+
+<h3 id="2-Docker容器的使用（基本常用命令）"><a href="#2-Docker容器的使用（基本常用命令）" class="headerlink" title="2.Docker容器的使用（基本常用命令）"></a>2.Docker容器的使用（基本常用命令）</h3><p>​            <strong>获取镜像</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker pull ubuntu</span><br></pre></td></tr></table></figure>
+
+<p>​            <strong>启动容器</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker run -it ubuntu /bin/bash</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><strong>-i</strong>: 交互式操作。</li>
+<li><strong>-t</strong>: 终端。</li>
+<li><strong>ubuntu</strong>: ubuntu 镜像。</li>
+<li><strong>&#x2F;bin&#x2F;bash</strong>：放在镜像名后的是命令，这里我们希望有个交互式 Shell，因此用的是 &#x2F;bin&#x2F;bash。</li>
+</ul>
+<p>​            <strong>查看所有的容器命令如下：</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ docker ps -a</span><br></pre></td></tr></table></figure>
+
+<p>​            <strong>启动一个已停止的容器：</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ docker start b750bbbcfd88 </span><br></pre></td></tr></table></figure>
+
+<p>​            <strong>后台运行</strong></p>
+<p>​    在大部分的场景下，我们希望 docker 的服务是在后台运行的，我们可以过 <strong>-d</strong> 指定容器的运行模式。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ docker run -itd --name ubuntu-test ubuntu /bin/bash</span><br></pre></td></tr></table></figure>
+
+<p>​    <strong>注：</strong>加了 <strong>-d</strong> 参数默认不会进入容器，想要进入容器需要使用指令 <strong>docker exec</strong></p>
+<p>​            <strong>exec 命令</strong></p>
+<p>​    下面演示了使用 docker exec 命令。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker exec -it 243c32535da7 /bin/bash</span><br></pre></td></tr></table></figure>
+
+<p>​    <strong>注意：</strong> 如果从这个容器退出，容器不会停止</p>
+<p>​        <strong>停止一个容器</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ docker stop &lt;容器 ID&gt;</span><br></pre></td></tr></table></figure>
+
+<p>​        <strong>停止的容器可以通过 docker restart 重启：</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ docker restart &lt;容器 ID&gt;</span><br></pre></td></tr></table></figure>
+
+<p>​        <strong>进入容器</strong></p>
+<p>在使用 <strong>-d</strong> 参数时，容器启动后会进入后台。此时想要进入容器，可以通过以下指令进入：</p>
+<ul>
+<li><strong>docker attach</strong></li>
+<li><strong>docker exec</strong>：推荐大家使用 docker exec 命令，因为此退出容器终端，不会导致容器的停止。</li>
+</ul>
+<p>​    <strong>attach 命令</strong></p>
+<p>​    下面演示了使用 docker attach 命令。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ docker attach 1e560fca3906 </span><br></pre></td></tr></table></figure>
+
+<p><strong>注意：</strong> 如果从这个容器退出，会导致容器的停止。</p>
+<p>​    <strong>exec 命令</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker exec -it 243c32535da7 /bin/bash</span><br></pre></td></tr></table></figure>
+
+<p><strong>注意：</strong> 如果从这个容器退出，容器不会停止，推荐大家使用 <strong>docker exec</strong> 。</p>
+<p>​    <strong>导出容器</strong></p>
+<p>如果要导出本地某个容器，可以使用 <strong>docker export</strong> 命令。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ docker export 1e560fca3906 &gt; ubuntu.tar</span><br></pre></td></tr></table></figure>
+
+<p>导出容器 1e560fca3906 快照到本地文件 ubuntu.tar。这样将导出容器快照到本地文件。</p>
+<p>​    <strong>导入容器快照</strong></p>
+<p>可以使用 docker import 从容器快照文件中再导入为镜像，以下实例将快照文件 ubuntu.tar 导入到镜像 test&#x2F;ubuntu:v1:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ cat docker/ubuntu.tar | docker import - test/ubuntu:v1</span><br></pre></td></tr></table></figure>
+
+<p>此外，也可以通过指定 URL 或者某个目录来导入，例如：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ docker import http://example.com/exampleimage.tgz example/imagerepo</span><br></pre></td></tr></table></figure>
+
+<p>​    <strong>删除容器</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ docker rm -f 1e560fca3906</span><br></pre></td></tr></table></figure>
+
+<p>下面的命令可以清理掉所有处于终止状态的容器。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ docker container prune</span><br></pre></td></tr></table></figure>
+
+<h3 id="3-运行一个web应用"><a href="#3-运行一个web应用" class="headerlink" title="3.运行一个web应用"></a>3.运行一个web应用</h3><p>​    <strong>目标：</strong>我们将在docker容器中运行一个 Python Flask 应用来运行一个web应用。</p>
+<p>​    <strong>导入镜像，运行容器</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">runoob@runoob:~# docker pull training/webapp  # 载入镜像</span><br><span class="line">runoob@runoob:~# docker run -d -P training/webapp python app.py</span><br></pre></td></tr></table></figure>
+
+<p>参数说明:</p>
+<ul>
+<li>**-d:**让容器在后台运行。</li>
+<li>**-P:**将容器内部使用的网络端口随机映射到我们使用的主机上。</li>
+</ul>
+<p>这里多了端口信息。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">PORTS</span><br><span class="line">0.0.0.0:32769-&gt;5000/tcp</span><br></pre></td></tr></table></figure>
+
+<p>Docker 开放了 5000 端口（默认 Python Flask 端口）映射到主机端口 32769 上。</p>
+<p>这时我们可以通过浏览器访问WEB应用（192.168.239.130：32769）。</p>
+<p>我们也可以通过 -p 参数来设置不一样的端口：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">runoob@runoob:~$ docker run -d -p 5000:5000 training/webapp python app.py</span><br></pre></td></tr></table></figure>
+
+<p>容器内部的 5000 端口映射到我们本地主机的 5000 端口上。</p>
+<p>使用 <strong>docker port</strong> 可以查看指定 （ID 或者名字）容器的某个确定端口映射到宿主机的端口号。</p>
+<p>​    <strong>查看 WEB 应用程序日志</strong></p>
+<p>docker logs [ID或者名字] 可以查看容器内部的标准输出。</p>
+<p>​    <strong>查看WEB应用程序容器的进程</strong></p>
+<p>我们还可以使用 docker top 来查看容器内部运行的进程</p>
+<p>​    <strong>检查 WEB 应用程序</strong></p>
+<p>使用 <strong>docker inspect</strong> 来查看 Docker 的底层信息。它会返回一个 JSON 文件记录着 Docker 容器的配置和状态信息。</p>
+<p>​    <strong>停止 WEB 应用容器</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">runoob@runoob:~$ docker stop wizardly_chandrasekhar   </span><br><span class="line">wizardly_chandrasekhar</span><br></pre></td></tr></table></figure>
+
+<p>​    <strong>重启WEB应用容器</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">runoob@runoob:~$ docker start wizardly_chandrasekhar</span><br><span class="line">wizardly_chandrasekhar</span><br></pre></td></tr></table></figure>
+
+<p>​    <strong>移除WEB应用容器</strong></p>
+<p>我们可以使用 docker rm 命令来删除不需要的容器</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">runoob@runoob:~$ docker rm wizardly_chandrasekhar  </span><br><span class="line">wizardly_chandrasekhar</span><br></pre></td></tr></table></figure>
+
+<p>删除容器时，容器必须是停止状态。</p>
+<h2 id="7、Docker镜像使用"><a href="#7、Docker镜像使用" class="headerlink" title="7、Docker镜像使用"></a>7、Docker镜像使用</h2><h3 id="1-管理和使用镜像"><a href="#1-管理和使用镜像" class="headerlink" title="1.管理和使用镜像"></a>1.管理和使用镜像</h3><h4 id="列出镜像列表"><a href="#列出镜像列表" class="headerlink" title="列出镜像列表"></a>列出镜像列表</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">runoob@runoob:~$ docker images </span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">REPOSITORY          TAG                 IMAGE ID            CREATED             SIZE</span><br><span class="line">ubuntu              14.04               90d5884b1ee0        5 days ago          188 MB</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><strong>REPOSITORY：</strong>表示镜像的仓库源</li>
+<li><strong>TAG：</strong>镜像的标签</li>
+<li><strong>IMAGE ID：</strong>镜像ID</li>
+<li><strong>CREATED：</strong>镜像创建时间</li>
+<li><strong>SIZE：</strong>镜像大小</li>
+</ul>
+<p>​        同一镜像可以有不同TAG，希望运行某TAG时：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">runoob@runoob:~$ docker run -t -i ubuntu:14.04 /bin/bash </span><br></pre></td></tr></table></figure>
+
+<h4 id="查找镜像"><a href="#查找镜像" class="headerlink" title="查找镜像"></a>查找镜像</h4><p>​    我们可以从 Docker Hub 网站来搜索镜像，Docker Hub 网址为： <strong><a target="_blank" rel="noopener" href="https://hub.docker.com/">https://hub.docker.com/</a></strong></p>
+<p>我们也可以使用 docker search 命令来搜索镜像。比如我们需要一个 httpd 的镜像来作为我们的 web 服务。我们可以通过 docker search 命令搜索 httpd 来寻找适合我们的镜像。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">runoob@runoob:~$  docker search httpd</span><br></pre></td></tr></table></figure>
+
+<h4 id="拖取镜像"><a href="#拖取镜像" class="headerlink" title="拖取镜像"></a>拖取镜像</h4><p>我们决定使用上图中的 httpd 官方版本的镜像，使用命令 docker pull 来下载镜像。</p>
+<h4 id="删除镜像"><a href="#删除镜像" class="headerlink" title="删除镜像"></a>删除镜像</h4><p>镜像删除使用 <strong>docker rmi</strong> 命令，比如我们删除 hello-world 镜像：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ docker rmi hello-world</span><br></pre></td></tr></table></figure>
+
+<h3 id="2-创建镜像"><a href="#2-创建镜像" class="headerlink" title="2.创建镜像"></a>2.创建镜像</h3><h4 id="更新镜像"><a href="#更新镜像" class="headerlink" title="更新镜像"></a>更新镜像</h4><p>在运行的容器内使用 <strong>apt-get update</strong> 命令进行更新。</p>
+<p>在完成操作之后，输入 exit 命令来退出这个容器。</p>
+<p>此时 ID 为 e218edb10161 的容器，是按我们的需求更改的容器。我们可以通过命令 docker commit 来提交容器副本。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">runoob@runoob:~$ docker commit -m=&quot;has update&quot; -a=&quot;runoob&quot; e218edb10161 runoob/ubuntu:v2</span><br><span class="line">sha256:70bf1840fd7c0d2d8ef0a42a817eb29f854c1af8f7c59fc03ac7bdee9545aff8</span><br></pre></td></tr></table></figure>
+
+<p>各个参数说明：</p>
+<ul>
+<li><strong>-m:</strong> 提交的描述信息</li>
+<li><strong>-a:</strong> 指定镜像作者</li>
+<li><strong>e218edb10161：</strong>容器 ID</li>
+<li><strong>runoob&#x2F;ubuntu:v2:</strong> 指定要创建的目标镜像名</li>
+</ul>
+<h4 id="构建镜像"><a href="#构建镜像" class="headerlink" title="构建镜像"></a>构建镜像</h4><p>我们使用命令 <strong>docker build</strong> ， 从零开始来创建一个新的镜像。为此，我们需要创建一个 Dockerfile 文件，其中包含一组指令来告诉 Docker 如何构建我们的镜像。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">runoob@runoob:~$ cat Dockerfile </span><br><span class="line">FROM    centos:6.795 </span><br><span class="line">MAINTAINER      Fisher &quot;fisher@sudops.com&quot;</span><br><span class="line"></span><br><span class="line">RUN     /bin/echo &#x27;root:123456&#x27; |chpasswd</span><br><span class="line">RUN     useradd runoob</span><br><span class="line">RUN     /bin/echo &#x27;runoob:123456&#x27; |chpasswd</span><br><span class="line">RUN     /bin/echo -e &quot;LANG=\&quot;en_US.UTF-8\&quot;&quot; &gt;/etc/default/local</span><br><span class="line">EXPOSE  22</span><br><span class="line">EXPOSE  80</span><br><span class="line">CMD     /usr/sbin/sshd -D</span><br></pre></td></tr></table></figure>
+
+<p>每一个指令都会在镜像上创建一个新的层，每一个指令的前缀都必须是大写的。</p>
+<p>第一条FROM，指定使用哪个镜像源</p>
+<p>RUN 指令告诉docker 在镜像内执行命令，安装了什么。。。</p>
+<p>然后，我们使用 Dockerfile 文件，通过 docker build 命令来构建一个镜像。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">runoob@runoob:~$ docker build -t runoob/centos:6.7 .</span><br><span class="line">Sending build context to Docker daemon 17.92 kB</span><br></pre></td></tr></table></figure>
+
+<p>参数说明：</p>
+<ul>
+<li><strong>-t</strong> ：指定要创建的目标镜像名</li>
+<li><strong>.</strong> ：Dockerfile 文件所在目录，可以指定Dockerfile 的绝对路径</li>
+</ul>
+<h4 id="设置镜像标签"><a href="#设置镜像标签" class="headerlink" title="设置镜像标签"></a>设置镜像标签</h4><p>我们可以使用 docker tag 命令，为镜像添加一个新的标签。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">runoob@runoob:~$ docker tag 860c279d2fec runoob/centos:dev</span><br></pre></td></tr></table></figure>
+
+<h2 id="7、Docker容器连接"><a href="#7、Docker容器连接" class="headerlink" title="7、Docker容器连接"></a>7、Docker容器连接</h2><h3 id="1-网络端口映射"><a href="#1-网络端口映射" class="headerlink" title="1.网络端口映射"></a>1.网络端口映射</h3><ul>
+<li><strong>-P :<strong>是容器内部端口</strong>随机</strong>映射到主机的端口。</li>
+<li><strong>-p :</strong> 是容器内部端口绑定到<strong>指定</strong>的主机端口。</li>
+</ul>
+<p>​    实例：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">runoob@runoob:~$ docker run -d -p 5000:5000 training/webapp python app.py</span><br><span class="line">33e4523d30aaf0258915c368e66e03b49535de0ef20317d3f639d40222ba6bc0</span><br></pre></td></tr></table></figure>
+
+<p>​    我们可以指定容器绑定的网络地址，比如绑定 127.0.0.1，如果要绑定 UDP 端口，可以在端口后面加上 <strong>&#x2F;udp</strong>。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">runoob@runoob:~$ docker run -d -p 127.0.0.1:5001:5000 training/webapp python app.py</span><br><span class="line">95c6ceef88ca3e71eaf303c2833fd6701d8d1b2572b5613b5a932dfdfe8a857c</span><br></pre></td></tr></table></figure>
+
+<p>​    <strong>docker port</strong> 命令可以让我们快捷地查看端口的绑定情况。</p>
+<h3 id="2-容器互联"><a href="#2-容器互联" class="headerlink" title="2.容器互联"></a>2.容器互联</h3><h4 id="容器命名："><a href="#容器命名：" class="headerlink" title="容器命名："></a>容器命名：</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">runoob@runoob:~$  docker run -d -P --name runoob training/webapp python app.py</span><br></pre></td></tr></table></figure>
+
+<h4 id="新建网络："><a href="#新建网络：" class="headerlink" title="新建网络："></a>新建网络：</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ docker network create -d bridge test-net</span><br></pre></td></tr></table></figure>
+
+<p>​        <strong>-d</strong>：参数指定 Docker 网络类型，有 bridge、overlay。</p>
+<h4 id="连接容器"><a href="#连接容器" class="headerlink" title="连接容器:"></a>连接容器:</h4><p>​        运行一个容器并连接到新建的 test-net 网络:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ docker run -itd --name test1 --network test-net ubuntu /bin/bash</span><br></pre></td></tr></table></figure>
+
+<p>​        打开新的终端，再运行一个容器并加入到 test-net 网络:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ docker run -itd --name test2 --network test-net ubuntu /bin/bash</span><br></pre></td></tr></table></figure>
+
+<h4 id="ping-证明容器test1-和-test2-建立了互联关系"><a href="#ping-证明容器test1-和-test2-建立了互联关系" class="headerlink" title="ping 证明容器test1 和 test2 建立了互联关系:"></a>ping 证明容器test1 和 test2 建立了互联关系:</h4><p>​        如果 test1、test2 容器内中无 ping 命令，则在容器内执行以下命令安装 ping（即学即用：可以在一个容器里安装好，提交容器到镜像，在以新的镜像重新运行以上俩个容器）。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">apt-get update</span><br><span class="line">apt install iputils-ping</span><br></pre></td></tr></table></figure>
+
+<p>​        即学即用：可以在一个容器里安装好，提交容器到镜像，在以新的镜像重新运行以上俩个容器。</p>
+<p>分别在test1中执行    <strong>ping test2</strong>    和    <strong>ping test1</strong>    检测连接。</p>
+<h2 id="8、Docker仓库管理"><a href="#8、Docker仓库管理" class="headerlink" title="8、Docker仓库管理"></a>8、Docker仓库管理</h2><p>​    <strong>登录：(DockerHub账号)</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker login</span><br></pre></td></tr></table></figure>
+
+<p>​    <strong>退出：</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker logout</span><br></pre></td></tr></table></figure>
+
+<p>​    <strong>拉去镜像到本地仓库：</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker pull ubuntu</span><br></pre></td></tr></table></figure>
+
+<p>​    <strong>推送镜像到GitHub：</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker tag ubuntu:latset 15037846951/diy_name</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker push 15037846951/diy_name</span><br></pre></td></tr></table></figure>
+
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://example.com/2022/04/04/Docker/" data-id="cl1khe7gc0000z4w6do8aesvi" data-title="" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2022/04/04/Docker%E6%80%BB%E7%BB%93/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Newer</strong>
+      <div class="article-nav-title">
+        
+          (no title)
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2022/03/16/Hexo-learn/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title"></div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+
+  
+    
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/04/">April 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/03/">March 2022</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2022/04/04/Spring%E6%B3%A8%E8%A7%A3/">(no title)</a>
+          </li>
+        
+          <li>
+            <a href="/2022/04/04/Docker%E6%80%BB%E7%BB%93/">(no title)</a>
+          </li>
+        
+          <li>
+            <a href="/2022/04/04/Docker/">(no title)</a>
+          </li>
+        
+          <li>
+            <a href="/2022/03/16/Hexo-learn/">(no title)</a>
+          </li>
+        
+          <li>
+            <a href="/2022/03/14/hello-world/">Hello World</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+      &copy; 2022 John Doe<br>
+      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+
+<script src="/js/jquery-3.4.1.min.js"></script>
+
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+
+  </div>
+</body>
+</html>

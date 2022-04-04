@@ -71,6 +71,541 @@
       <div class="outer">
         <section id="main">
   
+    <article id="post-Spring注解" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2022/04/04/Spring%E6%B3%A8%E8%A7%A3/" class="article-date">
+  <time class="dt-published" datetime="2022-04-04T08:59:06.039Z" itemprop="datePublished">2022-04-04</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h1 id="Spring注解-annotation"><a href="#Spring注解-annotation" class="headerlink" title="Spring注解(annotation)"></a>Spring注解(annotation)</h1><ul>
+<li>它可以充分利用 Java 的反射机制获取类结构信息，<strong>这些信息可以有效减少配置的工作</strong>。如使用 JPA 注释配置 ORM 映射时，我们就不需要指定 PO 的属性名、类型等信息，如果关系表字段和 PO 属性名、类型都一致，您甚至无需编写任务属性映射信息——因为这些信息都可以通过 Java 反射机制获取。</li>
+<li>注释和 Java 代码位于一个文件中，而 XML 配置采用独立的配置文件，大多数<strong>配置信息在程序开发完成后都不会调整</strong>。而采用注释和配置文件在 XML 配置文件中，程序员在编写一个功能时，往往需要在程序文件和配置文件中不停切换，这种思维上的不连贯会降低开发效率。</li>
+</ul>
+<h2 id="目标"><a href="#目标" class="headerlink" title="目标"></a>目标</h2><p>​    <strong>在 Spring 容器中将 Office 和 Car 声明为 Bean，并注入到 Boss Bean 中</strong></p>
+<h2 id="原本的模式"><a href="#原本的模式" class="headerlink" title="原本的模式"></a>原本的模式</h2><p>三个类：Office、Car、Boss</p>
+<h3 id="Office："><a href="#Office：" class="headerlink" title="Office："></a>Office：</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">package</span> com.baobaotao;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">Office</span> &#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="type">String</span> <span class="variable">officeNo</span> <span class="operator">=</span>”<span class="number">001</span>”;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//省略 get/setter</span></span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> String <span class="title function_">toString</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="string">&quot;officeNo:&quot;</span> + officeNo;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="Car："><a href="#Car：" class="headerlink" title="Car："></a>Car：</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">package</span> com.baobaotao;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">Car</span> &#123;</span><br><span class="line">    <span class="keyword">private</span> String brand;</span><br><span class="line">    <span class="keyword">private</span> <span class="type">double</span> price;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 省略 get/setter</span></span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> String <span class="title function_">toString</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="string">&quot;brand:&quot;</span> + brand + <span class="string">&quot;,&quot;</span> + <span class="string">&quot;price:&quot;</span> + price;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="Boss-拥有Car和Office-："><a href="#Boss-拥有Car和Office-：" class="headerlink" title="Boss(拥有Car和Office)："></a>Boss(拥有Car和Office)：</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">                </span><br><span class="line"><span class="keyword">package</span> com.baobaotao;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">Boss</span> &#123;</span><br><span class="line">    <span class="keyword">private</span> Car car;</span><br><span class="line">    <span class="keyword">private</span> Office office;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 省略 get/setter</span></span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> String <span class="title function_">toString</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="string">&quot;car:&quot;</span> + car + <span class="string">&quot;\n&quot;</span> + <span class="string">&quot;office:&quot;</span> + office;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="Beans-xml-："><a href="#Beans-xml-：" class="headerlink" title="Beans.xml ："></a>Beans.xml ：</h3><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?xml version=<span class="string">&quot;1.0&quot;</span> encoding=<span class="string">&quot;UTF-8&quot;</span> ?&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">beans</span> <span class="attr">xmlns</span>=<span class="string">&quot;http://www.springframework.org/schema/beans&quot;</span></span></span><br><span class="line"><span class="tag">	<span class="attr">xmlns:xsi</span>=<span class="string">&quot;http://www.w3.org/2001/XMLSchema-instance&quot;</span></span></span><br><span class="line"><span class="tag">	<span class="attr">xsi:schemaLocation</span>=<span class="string">&quot;http://www.springframework.org/schema/beans </span></span></span><br><span class="line"><span class="string"><span class="tag"> http://www.springframework.org/schema/beans/spring-beans-2.5.xsd&quot;</span>&gt;</span></span><br><span class="line">    </span><br><span class="line">    <span class="comment">&lt;!--注解装配--&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">bean</span> <span class="attr">id</span>=<span class="string">&quot;boss&quot;</span> <span class="attr">class</span>=<span class="string">&quot;com.baobaotao.Boss&quot;</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">&quot;car&quot;</span> <span class="attr">ref</span>=<span class="string">&quot;car&quot;</span>/&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">&quot;office&quot;</span> <span class="attr">ref</span>=<span class="string">&quot;office&quot;</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">bean</span>&gt;</span></span><br><span class="line">    </span><br><span class="line">    <span class="tag">&lt;<span class="name">bean</span> <span class="attr">id</span>=<span class="string">&quot;office&quot;</span> <span class="attr">class</span>=<span class="string">&quot;com.baobaotao.Office&quot;</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">&quot;officeNo&quot;</span> <span class="attr">value</span>=<span class="string">&quot;002&quot;</span>/&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">bean</span>&gt;</span></span><br><span class="line">    </span><br><span class="line">    <span class="tag">&lt;<span class="name">bean</span> <span class="attr">id</span>=<span class="string">&quot;car&quot;</span> <span class="attr">class</span>=<span class="string">&quot;com.baobaotao.Car&quot;</span> <span class="attr">scope</span>=<span class="string">&quot;singleton&quot;</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">&quot;brand&quot;</span> <span class="attr">value</span>=<span class="string">&quot; 红旗 CA72&quot;</span>/&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">&quot;price&quot;</span> <span class="attr">value</span>=<span class="string">&quot;2000&quot;</span>/&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">bean</span>&gt;</span></span><br><span class="line">    </span><br><span class="line"><span class="tag">&lt;/<span class="name">beans</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="Test："><a href="#Test：" class="headerlink" title="Test："></a>Test：</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> org.springframework.context.ApplicationContext;</span><br><span class="line"><span class="keyword">import</span> org.springframework.context.support.ClassPathXmlApplicationContext;</span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">AnnoIoCTest</span> &#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> &#123;</span><br><span class="line">        String[] locations = &#123;<span class="string">&quot;beans.xml&quot;</span>&#125;;</span><br><span class="line">        <span class="type">ApplicationContext</span> <span class="variable">ctx</span> <span class="operator">=</span> </span><br><span class="line">		    <span class="keyword">new</span> <span class="title class_">ClassPathXmlApplicationContext</span>(locations);</span><br><span class="line">        <span class="type">Boss</span> <span class="variable">boss</span> <span class="operator">=</span> (Boss) ctx.getBean(<span class="string">&quot;boss&quot;</span>);</span><br><span class="line">        System.out.println(boss);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="使用-Autowired-注释："><a href="#使用-Autowired-注释：" class="headerlink" title="使用 @Autowired 注释："></a>使用 @Autowired 注释：</h2><h3 id="对类"><a href="#对类" class="headerlink" title="对类"></a>对类</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">                </span><br><span class="line"><span class="keyword">package</span> com.baobaotao;</span><br><span class="line"><span class="keyword">import</span> org.springframework.beans.factory.annotation.Autowired;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">Boss</span> &#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Autowired</span></span><br><span class="line">    <span class="keyword">private</span> Car car;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Autowired</span></span><br><span class="line">    <span class="keyword">private</span> Office office;</span><br><span class="line"></span><br><span class="line">    …</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>Spring 通过一个 <code>BeanPostProcessor</code> 对 <code>@Autowired</code> 进行解析，所以要让<code>@Autowired</code> 起作用必须事先在 Spring 容器中声明 <code>AutowiredAnnotationBeanPostProcessor</code> Bean。</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?xml version=<span class="string">&quot;1.0&quot;</span> encoding=<span class="string">&quot;UTF-8&quot;</span> ?&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">beans</span> <span class="attr">xmlns</span>=<span class="string">&quot;http://www.springframework.org/schema/beans&quot;</span></span></span><br><span class="line"><span class="tag">    <span class="attr">xmlns:xsi</span>=<span class="string">&quot;http://www.w3.org/2001/XMLSchema-instance&quot;</span></span></span><br><span class="line"><span class="tag">    <span class="attr">xsi:schemaLocation</span>=<span class="string">&quot;http://www.springframework.org/schema/beans </span></span></span><br><span class="line"><span class="string"><span class="tag"> http://www.springframework.org/schema/beans/spring-beans-2.5.xsd&quot;</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">&lt;!-- 该 BeanPostProcessor 将自动起作用，对标注 @Autowired 的 Bean 进行自动注入 --&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">bean</span> <span class="attr">class</span>=<span class="string">&quot;org.springframework.beans.factory.annotation.</span></span></span><br><span class="line"><span class="string"><span class="tag">        AutowiredAnnotationBeanPostProcessor&quot;</span>/&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">&lt;!-- 移除 boss Bean 的属性注入配置的信息 --&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">bean</span> <span class="attr">id</span>=<span class="string">&quot;boss&quot;</span> <span class="attr">class</span>=<span class="string">&quot;com.baobaotao.Boss&quot;</span>/&gt;</span></span><br><span class="line">    </span><br><span class="line"> </span><br><span class="line">    <span class="tag">&lt;<span class="name">bean</span> <span class="attr">id</span>=<span class="string">&quot;office&quot;</span> <span class="attr">class</span>=<span class="string">&quot;com.baobaotao.Office&quot;</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">&quot;officeNo&quot;</span> <span class="attr">value</span>=<span class="string">&quot;001&quot;</span>/&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">bean</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">bean</span> <span class="attr">id</span>=<span class="string">&quot;car&quot;</span> <span class="attr">class</span>=<span class="string">&quot;com.baobaotao.Car&quot;</span> <span class="attr">scope</span>=<span class="string">&quot;singleton&quot;</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">&quot;brand&quot;</span> <span class="attr">value</span>=<span class="string">&quot; 红旗 CA72&quot;</span>/&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">&quot;price&quot;</span> <span class="attr">value</span>=<span class="string">&quot;2000&quot;</span>/&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">bean</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">beans</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>对成员变量使用<code>@Autowired</code> 后，可将它们的 setter 方法（<code>setCar()</code> 和 <code>setOffice()</code>）从 Boss 中删除。</strong></p>
+<p><strong>即删除property属性。</strong></p>
+<h3 id="对方法"><a href="#对方法" class="headerlink" title="对方法"></a>对方法</h3><p>原理与上述相同，只不过写的地方不同</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">                </span><br><span class="line"><span class="keyword">package</span> com.baobaotao;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">Boss</span> &#123;</span><br><span class="line">    <span class="keyword">private</span> Car car;</span><br><span class="line">    <span class="keyword">private</span> Office office;</span><br><span class="line"></span><br><span class="line">     <span class="meta">@Autowired</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">setCar</span><span class="params">(Car car)</span> &#123;</span><br><span class="line">        <span class="built_in">this</span>.car = car;</span><br><span class="line">    &#125;</span><br><span class="line"> </span><br><span class="line">    <span class="meta">@Autowired</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">setOffice</span><span class="params">(Office office)</span> &#123;</span><br><span class="line">        <span class="built_in">this</span>.office = office;</span><br><span class="line">    &#125;</span><br><span class="line">    …</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="对构造函数"><a href="#对构造函数" class="headerlink" title="对构造函数"></a>对构造函数</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">                </span><br><span class="line"><span class="keyword">package</span> com.baobaotao;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">Boss</span> &#123;</span><br><span class="line">    <span class="keyword">private</span> Car car;</span><br><span class="line">    <span class="keyword">private</span> Office office;</span><br><span class="line"> </span><br><span class="line">    <span class="meta">@Autowired</span></span><br><span class="line">    <span class="keyword">public</span> <span class="title function_">Boss</span><span class="params">(Car car ,Office office)</span>&#123;</span><br><span class="line">        <span class="built_in">this</span>.car = car;</span><br><span class="line">        <span class="built_in">this</span>.office = office ;</span><br><span class="line">    &#125;</span><br><span class="line"> </span><br><span class="line">    …</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>由于 <code>Boss()</code> 构造函数有两个入参，分别是 <code>car</code> 和 <code>office</code>，<code>@Autowired</code> 将分别寻找和它们类型匹配的 Bean，将它们作为<code>Boss(Car car ,Office office)</code> 的入参来创建 <code>Boss</code> Bean。</p>
+<h3 id="注意："><a href="#注意：" class="headerlink" title="注意："></a>注意：</h3><p>​    1、当<strong>找不到一个匹配的Bean时</strong>，抛出<code>BeanCreationException</code> 异常，可以在需要自动注入该类 Bean 的地方可以使用 **@Autowired(required &#x3D; false)**，这等于告诉 Spring：在找不到匹配 Bean 时也不报错。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">Boss</span> &#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> Car car;</span><br><span class="line">    <span class="keyword">private</span> Office office;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Autowired</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">setCar</span><span class="params">(Car car)</span> &#123;</span><br><span class="line">        <span class="built_in">this</span>.car = car;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="meta">@Autowired(required = false)</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">setOffice</span><span class="params">(Office office)</span> &#123;</span><br><span class="line">        <span class="built_in">this</span>.office = office;</span><br><span class="line">    &#125;</span><br><span class="line">    …</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>​        2、当<strong>同种类型的类出现多次时</strong>，抛出 <code>BeanCreationException</code> 异常，在 Spring 容器中配置了两个类型为 <code>Office</code> 类型的 Bean，当对 Boss 的 <code>office</code> 成员变量进行自动注入时，Spring 容器将无法确定到底要用哪一个 Bean，因此异常发生了。通过 <strong>@Qualifier</strong> 注释指定注入 Bean 的名称，这样歧义就消除了.</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">… </span><br><span class="line"><span class="comment">&lt;!--同种类型的类--&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">bean</span> <span class="attr">id</span>=<span class="string">&quot;office&quot;</span> <span class="attr">class</span>=<span class="string">&quot;com.baobaotao.Office&quot;</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">&quot;officeNo&quot;</span> <span class="attr">value</span>=<span class="string">&quot;001&quot;</span>/&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">bean</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">bean</span> <span class="attr">id</span>=<span class="string">&quot;office2&quot;</span> <span class="attr">class</span>=<span class="string">&quot;com.baobaotao.Office&quot;</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">&quot;officeNo&quot;</span> <span class="attr">value</span>=<span class="string">&quot;001&quot;</span>/&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">bean</span>&gt;</span></span><br><span class="line">…</span><br></pre></td></tr></table></figure>
+
+<p>​    对构造函数参数注释</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Autowired</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">setOffice</span><span class="params">(<span class="meta">@Qualifier(&quot;office&quot;)</span>Office office)</span> &#123;</span><br><span class="line">    <span class="built_in">this</span>.office = office;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>​    对成员变量</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Autowired</span></span><br><span class="line"><span class="meta">@Qualifier(&quot;office&quot;)</span></span><br><span class="line"><span class="keyword">private</span> Office office;</span><br></pre></td></tr></table></figure>
+
+<p><code>@Autowired</code> 和<code>@Qualifier</code> 结合使用时，自动注入的策略就从 byType 转变成 byName 了</p>
+<h2 id="使用-JSR-250-的注释"><a href="#使用-JSR-250-的注释" class="headerlink" title="使用 JSR-250 的注释"></a>使用 JSR-250 的注释</h2><h3 id="Resource-注释："><a href="#Resource-注释：" class="headerlink" title="@Resource 注释："></a>@Resource 注释：</h3><p>**<code>@Resource</code> 的作用相当于 <code>@Autowired</code>**，只不过 <code>@Autowired</code> 按 byType 自动注入，面<code>@Resource</code> 默认按 <strong>byName</strong> 自动注入罢了。</p>
+<p><code>@Resource</code> 有两个属性是比较重要的，分别是 <strong>name 和 type</strong>，Spring 将<code>@Resource</code> 注释的 name 属性解析为 Bean 的名字，而 type 属性则解析为 Bean 的类型。所以如果使用 name 属性，则使用 byName 的自动注入策略，而使用 type 属性时则使用 byType 自动注入策略。如果既不指定 name 也不指定 type 属性，这时将通过反射机制使用 <strong>byName</strong> **(默认)**自动注入策略。</p>
+<p>Resource 注释类位于 Spring 发布包的 lib&#x2F;j2ee&#x2F;common-annotations.jar 类包中，因此在使用之前必须将其加入到项目的类库中。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">                </span><br><span class="line"><span class="keyword">package</span> com.baobaotao;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> javax.annotation.Resource;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">Boss</span> &#123;</span><br><span class="line">    <span class="comment">// 自动注入类型为 Car 的 Bean</span></span><br><span class="line">    <span class="meta">@Resource</span></span><br><span class="line">    <span class="keyword">private</span> Car car;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 自动注入 bean 名称为 office 的 Bean</span></span><br><span class="line">    <span class="meta">@Resource(name = &quot;office&quot;)</span></span><br><span class="line">    <span class="keyword">private</span> Office office;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>还需要在 Spring 容器中注册一个负责处理这些注释的 <code>BeanPostProcessor</code>：</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">bean</span> <span class="attr">class</span>=<span class="string">&quot;org.springframework.context.annotation.CommonAnnotationBeanPostProcessor&quot;</span>/&gt;</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="PostConstruct和-PreDestroy"><a href="#PostConstruct和-PreDestroy" class="headerlink" title="@PostConstruct和@PreDestroy"></a>@PostConstruct和@PreDestroy</h3><p>Spring 容器中的 Bean 是有<strong>生命周期</strong>的，Spring 允许在 Bean 在<strong>初始化完成后</strong>以及 Bean <strong>销毁前</strong>执行特定的操作，您既可以通过实现 <strong>InitializingBean&#x2F;DisposableBean</strong> 接口来定制初始化之后 &#x2F; 销毁之前的操作方法，也可以通过 <bean> 元素的 <strong>init-method&#x2F;destroy-method</strong> 属性指定初始化之后 &#x2F; 销毁之前调用的操作方法。</p>
+<p>JSR-250 为初始化之后&#x2F;销毁之前方法的指定定义了两个注释类，分别是 <strong>@PostConstruct 和 @PreDestroy</strong>，这两个注释只能应用于<strong>方法</strong>上。<strong>标注了 @PostConstruct 注释的方法将在类实例化后调用，而标注了 @PreDestroy 的方法将在类销毁之前调用。</strong></p>
+<p>使用方法：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">                </span><br><span class="line"><span class="keyword">package</span> com.baobaotao;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> javax.annotation.Resource;</span><br><span class="line"><span class="keyword">import</span> javax.annotation.PostConstruct;</span><br><span class="line"><span class="keyword">import</span> javax.annotation.PreDestroy;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">Boss</span> &#123;</span><br><span class="line">    <span class="meta">@Resource</span></span><br><span class="line">    <span class="keyword">private</span> Car car;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Resource(name = &quot;office&quot;)</span></span><br><span class="line">    <span class="keyword">private</span> Office office;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@PostConstruct</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">postConstruct1</span><span class="params">()</span>&#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;postConstruct1&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@PreDestroy</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">preDestroy1</span><span class="params">()</span>&#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;preDestroy1&quot;</span>); </span><br><span class="line">    &#125;</span><br><span class="line">    …</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>不管是通过实现 <code>InitializingBean</code>&#x2F;<code>DisposableBean</code> 接口，还是通过 <bean> 元素的<code>init-method/destroy-method</code> 属性进行配置，<strong>都只能为 Bean 指定一个初始化 &#x2F; 销毁的方法</strong>。但是使用 <code>@PostConstruct</code> 和 <code>@PreDestroy</code> 注释却<strong>可以指定多个初始化 &#x2F; 销毁方法</strong>，那些被标注 <code>@PostConstruct</code> 或 <code>@PreDestroy</code> 注释的方法都会在初始化 &#x2F; 销毁时被执行。</p>
+<p>测试代码：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.baobaotao;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> org.springframework.context.support.ClassPathXmlApplicationContext;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">AnnoIoCTest</span> &#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> &#123;</span><br><span class="line">        String[] locations = &#123;<span class="string">&quot;beans.xml&quot;</span>&#125;;</span><br><span class="line">        <span class="type">ClassPathXmlApplicationContext</span> <span class="variable">ctx</span> <span class="operator">=</span> </span><br><span class="line">            <span class="keyword">new</span> <span class="title class_">ClassPathXmlApplicationContext</span>(locations);</span><br><span class="line">        <span class="type">Boss</span> <span class="variable">boss</span> <span class="operator">=</span> (Boss) ctx.getBean(<span class="string">&quot;boss&quot;</span>);</span><br><span class="line">        System.out.println(boss);</span><br><span class="line">        ctx.destroy();<span class="comment">// 关闭 Spring 容器，以触发 Bean 销毁方法的执行</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="使用context-annotation-config简化配置"><a href="#使用context-annotation-config简化配置" class="headerlink" title="使用context:annotation-config简化配置"></a>使用<a href="context:annotation-config">context:annotation-config</a>简化配置</h2><p><strong>Spring 2.1 添加了一个新的 context 的 Schema 命名空间</strong>，该命名空间对<strong>注释驱动</strong>、<strong>属性文件引入</strong>、<strong>加载期织入</strong>等功能提供了便捷的配置。我们知道注释本身是不会做任何事情的，它仅提供元数据信息。要使元数据信息真正起作用，必须让负责处理这些元数据的处理器工作起来。</p>
+<p>而我们前面所介绍的 <code>AutowiredAnnotationBeanPostProcessor</code> 和 <code>CommonAnnotationBeanPostProcessor</code> 就是处理这些注释元数据的处理器。但是直接在 Spring 配置文件中定义这些 Bean 显得比较笨拙。Spring 为我们提供了一种方便的注册这些<code>BeanPostProcessor</code> 的方式。</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?xml version=<span class="string">&quot;1.0&quot;</span> encoding=<span class="string">&quot;UTF-8&quot;</span> ?&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">beans</span> <span class="attr">xmlns</span>=<span class="string">&quot;http://www.springframework.org/schema/beans&quot;</span></span></span><br><span class="line"><span class="tag">    <span class="attr">xmlns:xsi</span>=<span class="string">&quot;http://www.w3.org/2001/XMLSchema-instance&quot;</span></span></span><br><span class="line"><span class="tag">       </span></span><br><span class="line"><span class="tag">       &lt;!<span class="attr">--</span>声明 <span class="attr">context</span> 命名空间。<span class="attr">--</span>&gt;</span></span><br><span class="line">     xmlns:context=&quot;http://www.springframework.org/schema/context&quot;</span><br><span class="line"></span><br><span class="line">     xsi:schemaLocation=&quot;http://www.springframework.org/schema/beans </span><br><span class="line"> http://www.springframework.org/schema/beans/spring-beans-2.5.xsd</span><br><span class="line"></span><br><span class="line">	<span class="comment">&lt;!--声明 context 命名空间。--&gt;</span></span><br><span class="line"> http://www.springframework.org/schema/context </span><br><span class="line"> http://www.springframework.org/schema/context/spring-context-2.5.xsd&quot;&gt;</span><br><span class="line"> 	<span class="comment">&lt;!--&lt;context:annotation-config/&gt;隐式地向 Spring 容器注册BeanPostProcessor--&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">context:annotation-config</span>/&gt;</span> </span><br><span class="line"></span><br><span class="line">    <span class="tag">&lt;<span class="name">bean</span> <span class="attr">id</span>=<span class="string">&quot;boss&quot;</span> <span class="attr">class</span>=<span class="string">&quot;com.baobaotao.Boss&quot;</span>/&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">bean</span> <span class="attr">id</span>=<span class="string">&quot;office&quot;</span> <span class="attr">class</span>=<span class="string">&quot;com.baobaotao.Office&quot;</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">&quot;officeNo&quot;</span> <span class="attr">value</span>=<span class="string">&quot;001&quot;</span>/&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">bean</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">bean</span> <span class="attr">id</span>=<span class="string">&quot;car&quot;</span> <span class="attr">class</span>=<span class="string">&quot;com.baobaotao.Car&quot;</span> <span class="attr">scope</span>=<span class="string">&quot;singleton&quot;</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">&quot;brand&quot;</span> <span class="attr">value</span>=<span class="string">&quot; 红旗 CA72&quot;</span>/&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">&quot;price&quot;</span> <span class="attr">value</span>=<span class="string">&quot;2000&quot;</span>/&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">bean</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">beans</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p><strong><a href="context:annotationconfig/">context:annotationconfig/</a></strong> 将隐式地向 Spring 容器注册 <code>AutowiredAnnotationBeanPostProcessor</code>、<code>CommonAnnotationBeanPostProcessor</code>、<code>PersistenceAnnotationBeanPostProcessor</code> 以及<code>equiredAnnotationBeanPostProcessor</code> 这 4 个 BeanPostProcessor。</p>
+<p><strong>在配置文件中使用 context 命名空间之前，必须在 <beans> 元素中声明 context 命名空间。</strong></p>
+<h2 id="Component-注释"><a href="#Component-注释" class="headerlink" title="@Component 注释"></a><strong>@Component 注释</strong></h2><p>仅需要在类定义处，使用 <code>@Component</code> 注释就可以将一个类<strong>定义了 Spring 容器中的 Bean。</strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.baobaotao;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> org.springframework.stereotype.Component;</span><br><span class="line"></span><br><span class="line"><span class="meta">@Component</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">Car</span> &#123;</span><br><span class="line">    …</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.baobaotao;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> org.springframework.stereotype.Component;</span><br><span class="line"></span><br><span class="line"><span class="meta">@Component</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">Office</span> &#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="type">String</span> <span class="variable">officeNo</span> <span class="operator">=</span> <span class="string">&quot;001&quot;</span>;</span><br><span class="line">    …</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>@Component 有一个可选的入参，用于指定 Bean 的名称，在 Boss 中，我们就将 Bean 名称定义为“<code>boss</code>”。一般情况下，Bean 都是 singleton 的，需要注入 Bean 的地方仅需要通过 byType 策略就可以自动注入了，所以大可不必指定 Bean 的名称。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.baobaotao;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> org.springframework.beans.factory.annotation.Autowired;</span><br><span class="line"><span class="keyword">import</span> org.springframework.beans.factory.annotation.Required;</span><br><span class="line"><span class="keyword">import</span> org.springframework.beans.factory.annotation.Qualifier;</span><br><span class="line"><span class="keyword">import</span> org.springframework.stereotype.Component;</span><br><span class="line"></span><br><span class="line"><span class="meta">@Component(&quot;boss&quot;)</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">Boss</span> &#123;</span><br><span class="line">    <span class="meta">@Autowired</span></span><br><span class="line">    <span class="keyword">private</span> Car car;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Autowired</span></span><br><span class="line">    <span class="keyword">private</span> Office office;</span><br><span class="line">    …</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>简化版的 beans.xml</strong></p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?xml version=<span class="string">&quot;1.0&quot;</span> encoding=<span class="string">&quot;UTF-8&quot;</span> ?&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">beans</span> <span class="attr">xmlns</span>=<span class="string">&quot;http://www.springframework.org/schema/beans&quot;</span></span></span><br><span class="line"><span class="tag">    <span class="attr">xmlns:xsi</span>=<span class="string">&quot;http://www.w3.org/2001/XMLSchema-instance&quot;</span></span></span><br><span class="line"><span class="tag">    <span class="attr">xmlns:context</span>=<span class="string">&quot;http://www.springframework.org/schema/context&quot;</span></span></span><br><span class="line"><span class="tag">    <span class="attr">xsi:schemaLocation</span>=<span class="string">&quot;http://www.springframework.org/schema/beans </span></span></span><br><span class="line"><span class="string"><span class="tag"> http://www.springframework.org/schema/beans/spring-beans-2.5.xsd</span></span></span><br><span class="line"><span class="string"><span class="tag"> http://www.springframework.org/schema/context </span></span></span><br><span class="line"><span class="string"><span class="tag"> http://www.springframework.org/schema/context/spring-context-2.5.xsd&quot;</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">context:component-scan</span> <span class="attr">base-package</span>=<span class="string">&quot;com.baobaotao&quot;</span>/&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">beans</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="扫描过滤"><a href="#扫描过滤" class="headerlink" title="扫描过滤"></a>扫描过滤</h2><p><a href="context:component-scan/">context:component-scan/</a> 的 <strong>base-package 属性指定了需要扫描的类包</strong>，类包及其递归子包中所有的类都会被处理。</p>
+<p><a href="context:component-scan/">context:component-scan/</a> <strong>还允许定义过滤器将基包下的某些类纳入或排除</strong>。Spring 支持以下 4 种类型的过滤方式，通过下表说明：</p>
+<table>
+<thead>
+<tr>
+<th align="left">过滤器类型</th>
+<th align="left">说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">注释</td>
+<td align="left">假如 com.baobaotao.SomeAnnotation 是一个注释类，我们可以将使用该注释的类过滤出来。</td>
+</tr>
+<tr>
+<td align="left">类名指定</td>
+<td align="left">通过全限定类名进行过滤，如您可以指定将 com.baobaotao.Boss 纳入扫描，而将 com.baobaotao.Car 排除在外。</td>
+</tr>
+<tr>
+<td align="left">正则表达式</td>
+<td align="left">通过正则表达式定义过滤的类，如下所示： com.baobaotao.Default.*</td>
+</tr>
+<tr>
+<td align="left">AspectJ 表达式</td>
+<td align="left">通过 AspectJ 表达式定义过滤的类，如下所示： com. baobaotao..*Service+</td>
+</tr>
+</tbody></table>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&lt;!--指定扫描com.baobaotao包下的service类，但不扫描util类--&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">context:component-scan</span> <span class="attr">base-package</span>=<span class="string">&quot;com.baobaotao&quot;</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">context:include-filter</span> <span class="attr">type</span>=<span class="string">&quot;regex&quot;</span> </span></span><br><span class="line"><span class="tag">        <span class="attr">expression</span>=<span class="string">&quot;com\.baobaotao.service\..*&quot;</span>/&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">context:exclude-filter</span> <span class="attr">type</span>=<span class="string">&quot;aspectj&quot;</span> </span></span><br><span class="line"><span class="tag">        <span class="attr">expression</span>=<span class="string">&quot;com.baobaotao.util..*&quot;</span>/&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">context:component-scan</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>值得注意的是 <a href="context:component-scan/">context:component-scan/</a> 配置项不但启用了对类包进行扫描以实施注释驱动 Bean 定义的功能，同时还启用了注释驱动自动注入的功能（即还隐式地在内部注册了<code>AutowiredAnnotationBeanPostProcessor</code> 和 <code>CommonAnnotationBeanPostProcessor</code>），<strong>因此当使用 <a href="context:component-scan/">context:component-scan/</a> 后，就可以将 <a href="context:annotation-config/">context:annotation-config/</a> 移除了。</strong></p>
+<h2 id="Scope-指定-Bean-的作用范围"><a href="#Scope-指定-Bean-的作用范围" class="headerlink" title="@Scope 指定 Bean 的作用范围"></a><strong>@Scope 指定 Bean 的作用范围</strong></h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">                </span><br><span class="line"><span class="keyword">package</span> com.baobaotao;</span><br><span class="line"><span class="keyword">import</span> org.springframework.context.annotation.Scope;</span><br><span class="line">…</span><br><span class="line"><span class="meta">@Scope(&quot;prototype&quot;)</span></span><br><span class="line"><span class="meta">@Component(&quot;boss&quot;)</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">Boss</span> &#123;</span><br><span class="line">    …</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这样，当从 Spring 容器中获取 <code>boss</code> Bean 时，每次返回的都是新的实例了。</p>
+<h2 id="Repository-Service-Controller"><a href="#Repository-Service-Controller" class="headerlink" title="@Repository @Service @Controller"></a>@Repository @Service @Controller</h2><p>Spring 2.5 中除了提供 <code>@Component</code> 注释外，还定义了几个拥有特殊语义的注释，它们分别是：<code>@Repository</code>、<code>@Service</code> 和<code>@Controller</code>。在目前的 Spring 版本中，<strong>这 3 个注释和 <code>@Component</code> 是等效的</strong>，但是从注释类的命名上，很容易看出<strong>这 3 个注释分别和持久层、业务层和控制层（Web 层）相对应</strong>。虽然目前这 3 个注释和<code>@Component</code> 相比没有什么新意，但 Spring 将在以后的版本中为它们添加特殊的功能。所以，如果 Web 应用程序采用了经典的三层分层结构的话，<strong>最好在持久层、业务层和控制层分别采用<code>@Repository</code>、<code>@Service</code> 和 <code>@Controller</code> 对分层中的类进行注释，而用<code>@Component</code> 对那些比较中立的类进行注释。</strong></p>
+<h2 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h2><p>1、@Component：将一个类定义在Spring 容器的 Bean中。</p>
+<p>​            @Component(“boss”)：用于指定 Bean 的名称，也可以省略。</p>
+<p>​            @Value(“热干面”)：用于给类的成员变量赋值。</p>
+<p>2、@Autowired：从容器中拿去需要的类，用于在类内用另一个类作为成员变量，可用在类、setter、构造函数。</p>
+<p>3、@Resource：与@Autowired作用相同。有name和type两种属性，可通过name和type拿去需要的类。</p>
+<p>4、@PostConstruct和@PreDestroy：标注了 @PostConstruct 注释的方法将在类实例化后调用，而标注了             @PreDestroy 的方法将在类销毁之前调用。</p>
+<p>5、简化配置</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&lt;!--声明 context 命名空间。--&gt;</span></span><br><span class="line"> xmlns:context=&quot;http://www.springframework.org/schema/context&quot;</span><br><span class="line"> http://www.springframework.org/schema/context </span><br><span class="line"> http://www.springframework.org/schema/context/spring-context-2.5.xsd&quot;&gt;</span><br><span class="line"></span><br><span class="line"><span class="comment">&lt;!--&lt;context:annotation-config/&gt;隐式地向 Spring 容器注册BeanPostProcessor--&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">context:annotation-config</span>/&gt;</span> </span><br></pre></td></tr></table></figure>
+
+<p>6、扫描过滤</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&lt;!--指定扫描com.baobaotao包下的service类，但不扫描util类--&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">context:component-scan</span> <span class="attr">base-package</span>=<span class="string">&quot;com.baobaotao&quot;</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">context:include-filter</span> <span class="attr">type</span>=<span class="string">&quot;regex&quot;</span> </span></span><br><span class="line"><span class="tag">        <span class="attr">expression</span>=<span class="string">&quot;com\.baobaotao.service\..*&quot;</span>/&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">context:exclude-filter</span> <span class="attr">type</span>=<span class="string">&quot;aspectj&quot;</span> </span></span><br><span class="line"><span class="tag">        <span class="attr">expression</span>=<span class="string">&quot;com.baobaotao.util..*&quot;</span>/&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">context:component-scan</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>因此当使用 <a href="context:component-scan/">context:component-scan/</a> 后，就可以将 <a href="context:annotation-config/">context:annotation-config/</a> 移除了</p>
+<p>7、@Scope：指定 Bean 的作用范围。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Scope(&quot;prototype&quot;)</span><span class="comment">//多实例，IOC容器启动创建的时候，并不会创建对象放在容器在容器当中，当你需要的时候，需要从容器当中取该对象的时候，就会创建。</span></span><br><span class="line"><span class="meta">@Scope(&quot;singleton&quot;)</span><span class="comment">//单实例 IOC容器启动的时候就会调用方法创建对象，以后每次获取都是从容器当中拿同一个对象（map当中）。</span></span><br><span class="line"><span class="meta">@Scope(&quot;request&quot;)</span><span class="comment">//同一个请求创建一个实例</span></span><br><span class="line"><span class="meta">@Scope(&quot;session&quot;)</span><span class="comment">//同一个session创建一个实例</span></span><br></pre></td></tr></table></figure>
+
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://example.com/2022/04/04/Spring%E6%B3%A8%E8%A7%A3/" data-id="cl1khe7gq0004z4w6b4qs3vk3" data-title="" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-Docker总结" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2022/04/04/Docker%E6%80%BB%E7%BB%93/" class="article-date">
+  <time class="dt-published" datetime="2022-04-04T08:59:00.211Z" itemprop="datePublished">2022-04-04</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h1 id="Docker总结"><a href="#Docker总结" class="headerlink" title="Docker总结"></a>Docker总结</h1><h2 id="1-安装"><a href="#1-安装" class="headerlink" title="1.安装"></a>1.安装</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_"># </span><span class="language-bash">使用脚本安装（也可以使用其他镜像）</span></span><br><span class="line">curl -fsSL https://get.docker.com | bash -s docker --mirror Aliyun</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">镜像加速，编辑 /etc/docker/daemon.json 文件，若不存在创建</span></span><br><span class="line">&#123;&quot;registry-mirrors&quot;:[&quot;https://reg-mirror.qiniu.com/&quot;]&#125;</span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">重启服务</span></span><br><span class="line">sudo systemctl daemon-reload</span><br><span class="line">sudo systemctl restart docker</span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">检查加速是否成功</span></span><br><span class="line">docker info</span><br><span class="line">Registry Mirrors:</span><br><span class="line">    https://reg-mirror.qiniu.com</span><br></pre></td></tr></table></figure>
+
+<h2 id="2-常用命令"><a href="#2-常用命令" class="headerlink" title="2.常用命令"></a>2.常用命令</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_">#</span><span class="language-bash">搜索镜像</span></span><br><span class="line">docker search &lt;镜像名&gt;</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">拖取镜像</span></span><br><span class="line">docker pull &lt;镜像名&gt;</span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">示例：</span></span><br><span class="line">docker pull centos:latest</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">运行容器</span></span><br><span class="line">docker run -it -d -p 1111:2222 --name name &lt;镜像名&gt;</span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">参数介绍</span></span><br><span class="line"><span class="meta prompt_">	#</span><span class="language-bash">-it :交互的模式进行，进入容器内部</span></span><br><span class="line"><span class="meta prompt_">	#</span><span class="language-bash">-d :后台进行，只运行容器，不进入</span></span><br><span class="line"><span class="meta prompt_">	#</span><span class="language-bash">-p :暴露端口，1111：暴露的主机端口，2222：容器内的端口</span></span><br><span class="line"><span class="meta prompt_">	#</span><span class="language-bash">--name :给容器的命名</span></span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">示例</span></span><br><span class="line">docker run -it -d -p 8080:8080 --name mycentos centos</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">挂载</span></span><br><span class="line">docker run -it -d &lt;镜像名&gt; -v &lt;name&gt;:&lt;需要挂载的容器内的目录&gt;</span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">参数介绍</span></span><br><span class="line"><span class="meta prompt_">	#</span><span class="language-bash">-v :挂载volume,实现主机与容器的数据同步</span></span><br><span class="line"><span class="meta prompt_">	#</span><span class="language-bash">name:有这个参数，代表具名挂载</span></span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">示例</span></span><br><span class="line">docker run -it -d centos -v whd:/etc/nginx nginx</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">查看挂载的卷</span></span><br><span class="line">docker volume ls</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">查看卷的具体信息</span></span><br><span class="line">docker volume inspect &lt;卷名&gt;</span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">Mountpoint：挂载在主机的目录</span></span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">进入容器</span></span><br><span class="line">docker exec &lt;容器名&gt;</span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">示例</span></span><br><span class="line">docker exec centos</span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">退出</span></span><br><span class="line">exit</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">停止启动容器</span></span><br><span class="line">docker stop &lt;镜像&gt;</span><br><span class="line">docker start &lt;镜像&gt;</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">展示</span></span><br><span class="line">docker ps	#正在运行的容器</span><br><span class="line">docker ps -a	#列出所有容器</span><br><span class="line">docker images	#列出镜像</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">删除镜像</span></span><br><span class="line">docker rmi &lt;镜像&gt;</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">删除容器</span></span><br><span class="line">docker rm &lt;容器&gt;</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash">帮助</span></span><br><span class="line">docker help</span><br><span class="line">docker pull --help #某命令的具体用法</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://example.com/2022/04/04/Docker%E6%80%BB%E7%BB%93/" data-id="cl1khe7gl0001z4w61aqxcuy6" data-title="" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
+    <article id="post-Docker" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2022/04/04/Docker/" class="article-date">
+  <time class="dt-published" datetime="2022-04-04T08:58:57.740Z" itemprop="datePublished">2022-04-04</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h1 id="Docker"><a href="#Docker" class="headerlink" title="Docker"></a>Docker</h1><h2 id="1、Docker简介"><a href="#1、Docker简介" class="headerlink" title="1、Docker简介"></a>1、Docker简介</h2><p>​        Docker 是一个开源的应用容器引擎，基于 <a target="_blank" rel="noopener" href="https://www.runoob.com/go/go-tutorial.html">Go 语言</a> 并遵从 Apache2.0 协议开源。</p>
+<p>​        Docker 可以让开发者打包他们的应用以及依赖包到一个轻量级、可移植的容器中，然后发布到任何流行的 Linux 机器上，也可以实现虚拟化。</p>
+<p><strong>Docker应用场景：</strong></p>
+<ul>
+<li>Web 应用的自动化打包和发布。</li>
+<li>自动化测试和持续集成、发布。</li>
+<li>在服务型环境中部署和调整数据库或其他的后台应用。</li>
+<li>从头编译或者扩展现有的 OpenShift 或 Cloud Foundry 平台来搭建自己的 PaaS 环境。</li>
+</ul>
+<p>Docker 官网：<a target="_blank" rel="noopener" href="https://www.docker.com/">https://www.docker.com</a></p>
+<p>Github Docker 源码：<a target="_blank" rel="noopener" href="https://github.com/docker/docker-ce">https://github.com/docker/docker-ce</a></p>
+<p>Docker Registry：Docker Hub(<a target="_blank" rel="noopener" href="https://hub.docker.com/">https://hub.docker.com</a>)</p>
+<h2 id="2、Docker架构"><a href="#2、Docker架构" class="headerlink" title="2、Docker架构"></a>2、Docker架构</h2><h3 id="1、镜像（image）"><a href="#1、镜像（image）" class="headerlink" title="1、镜像（image）"></a>1、镜像（image）</h3><p>​                类似于一个文件系统，比如官方镜像 ubuntu:16.04 就包含了完整的一套 Ubuntu16.04 最小系统的 root         文件系统。</p>
+<h3 id="2、容器（container"><a href="#2、容器（container" class="headerlink" title="2、容器（container)"></a>2、容器（container)</h3><p>​                镜像（Image）和容器（Container）的关系，就像是面向对象程序设计中的类和实例一样，镜像是静态        的定义，容器是镜像运行时的实体。容器可以被创建、启动、停止、删除、暂停等。    </p>
+<h3 id="3、仓库（repository"><a href="#3、仓库（repository" class="headerlink" title="3、仓库（repository)"></a>3、仓库（repository)</h3><p>​                仓库可看成一个代码控制中心，用来保存镜像。</p>
+<h3 id="4、容器与镜像区别"><a href="#4、容器与镜像区别" class="headerlink" title="4、容器与镜像区别"></a>4、容器与镜像区别</h3><p>​                Docker 容器通过 Docker 镜像来创建。</p>
+<p>​                容器与镜像的关系类似于面向对象编程中的对象(实例)与类。</p>
+<h3 id="5、整体架构"><a href="#5、整体架构" class="headerlink" title="5、整体架构"></a>5、整体架构</h3><p>​                <img src="https://www.runoob.com/wp-content/uploads/2016/04/576507-docker1.png" alt="img"></p>
+<table>
+<thead>
+<tr>
+<th align="left">概念</th>
+<th align="left">说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">Docker 镜像(Images)</td>
+<td align="left">Docker 镜像是用于创建 Docker 容器的模板，比如 Ubuntu 系统。</td>
+</tr>
+<tr>
+<td align="left">Docker 容器(Container)</td>
+<td align="left">容器是独立运行的一个或一组应用，是镜像运行时的实体。</td>
+</tr>
+<tr>
+<td align="left">Docker 客户端(Client)</td>
+<td align="left">Docker 客户端通过命令行或者其他工具使用 Docker SDK (<a target="_blank" rel="noopener" href="https://docs.docker.com/develop/sdk/">https://docs.docker.com/develop/sdk/</a>) 与 Docker 的守护进程通信。</td>
+</tr>
+<tr>
+<td align="left">Docker 主机(Host)</td>
+<td align="left">一个物理或者虚拟的机器用于执行 Docker 守护进程和容器。</td>
+</tr>
+<tr>
+<td align="left">Docker Registry</td>
+<td align="left">Docker 仓库用来保存镜像，可以理解为代码控制中的代码仓库。Docker Hub(<a target="_blank" rel="noopener" href="https://hub.docker.com/">https://hub.docker.com</a>) 提供了庞大的镜像集合供使用。一个 Docker Registry 中可以包含多个仓库（Repository）；每个仓库可以包含多个标签（Tag）；每个标签对应一个镜像。通常，一个仓库会包含同一个软件不同版本的镜像，而标签就常用于对应该软件的各个版本。我们可以通过 <strong>&lt;仓库名&gt;:&lt;标签&gt;</strong> 的格式来指定具体是这个软件哪个版本的镜像。如果不给出标签，将以 <strong>latest</strong> 作为默认标签。</td>
+</tr>
+<tr>
+<td align="left">Docker Machine</td>
+<td align="left">Docker Machine是一个简化Docker安装的命令行工具，通过一个简单的命令行即可在相应的平台上安装Docker，比如VirtualBox、 Digital Ocean、Microsoft Azure。</td>
+</tr>
+</tbody></table>
+<h2 id="3、安装"><a href="#3、安装" class="headerlink" title="3、安装"></a>3、安装</h2><h3 id="1、ubuntu"><a href="#1、ubuntu" class="headerlink" title="1、ubuntu"></a>1、ubuntu</h3><p>​    使用脚本安装：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">curl -fsSL https://get.docker.com | bash -s docker --mirror Aliyun</span><br></pre></td></tr></table></figure>
+
+<h3 id="2、Windows安装"><a href="#2、Windows安装" class="headerlink" title="2、Windows安装"></a>2、Windows安装</h3><p>​    Docker 必须部署在 Linux 内核的系统上。如果其他系统想部署 Docker 就必须安装一个虚拟 Linux 环境。</p>
+<p>​    <img src="https://www.runoob.com/wp-content/uploads/2016/05/CV09QJMI2fb7L2k0.png" alt="img"></p>
+<p>​    Docker Desktop 是 Docker 在 Windows 10 和 macOS 操作系统上的官方安装方式，这个方法依然属于先在虚拟机中安装 Linux 然后再安装 Docker 的方法。</p>
+<p>Docker Desktop 官方下载地址： <a target="_blank" rel="noopener" href="https://hub.docker.com/editions/community/docker-ce-desktop-windows">https://hub.docker.com/editions/community/docker-ce-desktop-windows</a></p>
+<p>​    开启Hyper-V功能（仅win10系统用户）：如下图</p>
+<p>​    <strong>注意：</strong>虚拟机一旦启用，QEMU、VirtualBox 或 VMWare Workstation 15 及以下版本将无法使用！</p>
+<p><img src="https://www.runoob.com/wp-content/uploads/2017/12/1513668234-6433-20171206211858191-1177002365.png" alt="img"></p>
+<h2 id="4、Docker镜像加速"><a href="#4、Docker镜像加速" class="headerlink" title="4、Docker镜像加速"></a>4、Docker镜像加速</h2><ul>
+<li><p>科大镜像：<strong><a target="_blank" rel="noopener" href="https://docker.mirrors.ustc.edu.cn/">https://docker.mirrors.ustc.edu.cn/</a></strong></p>
+</li>
+<li><p>网易：<strong><a target="_blank" rel="noopener" href="https://hub-mirror.c.163.com/">https://hub-mirror.c.163.com/</a></strong></p>
+</li>
+<li><p>阿里云：<strong>https:&#x2F;&#x2F;&lt;你的ID&gt;.mirror.aliyuncs.com</strong></p>
+</li>
+<li><p>七牛云加速器：<strong><a target="_blank" rel="noopener" href="https://reg-mirror.qiniu.com/">https://reg-mirror.qiniu.com</a></strong></p>
+<p>阿里云镜像获取地址：<a target="_blank" rel="noopener" href="https://cr.console.aliyun.com/cn-hangzhou/instances/mirrors%EF%BC%8C%E7%99%BB%E9%99%86%E5%90%8E%EF%BC%8C%E5%B7%A6%E4%BE%A7%E8%8F%9C%E5%8D%95%E9%80%89%E4%B8%AD%E9%95%9C%E5%83%8F%E5%8A%A0%E9%80%9F%E5%99%A8%E5%B0%B1%E5%8F%AF%E4%BB%A5%E7%9C%8B%E5%88%B0%E4%BD%A0%E7%9A%84%E4%B8%93%E5%B1%9E%E5%9C%B0%E5%9D%80%E4%BA%86%E3%80%82">https://cr.console.aliyun.com/cn-hangzhou/instances/mirrors，登陆后，左侧菜单选中镜像加速器就可以看到你的专属地址了。</a></p>
+<h3 id="Ubuntu14-04、Debian7Wheezy"><a href="#Ubuntu14-04、Debian7Wheezy" class="headerlink" title="Ubuntu14.04、Debian7Wheezy"></a><strong>Ubuntu14.04、Debian7Wheezy</strong></h3><p>对于使用 upstart 的系统而言，编辑 &#x2F;etc&#x2F;default&#x2F;docker 文件，在其中的 DOCKER_OPTS 中配置加速器地址：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">DOCKER_OPTS=<span class="string">&quot;--registry-mirror=https://registry.docker-cn.com&quot;</span></span><br></pre></td></tr></table></figure></li>
+</ul>
+<p>​        重启服务：</p>
+<p>​                $ sudo service docker restart</p>
+<h3 id="Ubuntu16-04-、Debian8-、CentOS7"><a href="#Ubuntu16-04-、Debian8-、CentOS7" class="headerlink" title="Ubuntu16.04+、Debian8+、CentOS7"></a><strong>Ubuntu16.04+、Debian8+、CentOS7</strong></h3><p>​                对于使用 systemd 的系统，请在 &#x2F;etc&#x2F;docker&#x2F;daemon.json 中写入如下内容（如果文件不存在请新建该        文件）：    </p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#123;&quot;registry-mirrors&quot;:[&quot;https://reg-mirror.qiniu.com/&quot;]&#125;</span><br></pre></td></tr></table></figure>
+
+<p>​            之后重新启动服务：</p>
+<p>​                    <code>sudo systemctl daemon-reload</code><br>​                    <code>sudo systemctl restart docker</code></p>
+<h3 id="Windows-10"><a href="#Windows-10" class="headerlink" title="Windows 10"></a><strong>Windows 10</strong></h3><p>​        对于使用 Windows 10 的系统，在系统右下角托盘 Docker 图标内右键菜单选择 Settings，打开配置窗口后左侧导航菜单选择 Daemon。在 Registrymirrors 一栏中填写加速器地址 <strong><a target="_blank" rel="noopener" href="https://docker.mirrors.ustc.edu.cn/">https://docker.mirrors.ustc.edu.cn/</a></strong> ，之后点击 Apply 保存后 Docker 就会重启并应用配置的镜像地址了。</p>
+<h3 id="检查加速器是否生效："><a href="#检查加速器是否生效：" class="headerlink" title="检查加速器是否生效："></a><strong>检查加速器是否生效：</strong></h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ docker info</span><br><span class="line">Registry Mirrors:</span><br><span class="line">    https://reg-mirror.qiniu.com</span><br></pre></td></tr></table></figure>
+
+<h2 id="5、Docker使用"><a href="#5、Docker使用" class="headerlink" title="5、Docker使用"></a>5、Docker使用</h2><h3 id="docker-hello-word"><a href="#docker-hello-word" class="headerlink" title="docker hello word"></a>docker hello word</h3><h4 id="1-1-hello-word"><a href="#1-1-hello-word" class="headerlink" title="1.1 hello word"></a>1.1 hello word</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker run ubuntu:15.10 /bin/echo &quot;Hello world&quot;</span><br></pre></td></tr></table></figure>
+
+<p>​        各个参数解析：</p>
+<ul>
+<li><strong>docker:</strong> Docker 的二进制执行文件。</li>
+<li><strong>run:</strong> 与前面的 docker 组合来运行一个容器。</li>
+<li><strong>ubuntu:15.10</strong> 指定要运行的镜像，Docker 首先从本地主机上查找镜像是否存在，如果不存在，Docker 就会从镜像仓库 Docker Hub 下载公共镜像。</li>
+<li><strong>&#x2F;bin&#x2F;echo “Hello world”:</strong> 在启动的容器里执行的命令（该输入部分即为在Ubuntu命令行中的输入）</li>
+</ul>
+<h4 id="1-2-运行交互式的容器"><a href="#1-2-运行交互式的容器" class="headerlink" title="1.2 运行交互式的容器"></a>1.2 运行交互式的容器</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">runoob@runoob:~$ docker run -i -t ubuntu:15.10 /bin/bash</span><br><span class="line">root@0123ce188bd8:/#</span><br></pre></td></tr></table></figure>
+
+<p>​            交互式的容器：本机与docker镜像的切换。</p>
+<ul>
+<li><strong>-t:</strong> 在新容器内指定一个伪终端或终端。</li>
+<li><strong>-i:</strong> 允许你对容器内的标准输入 (STDIN) 进行交互。</li>
+</ul>
+<p>​            我们可以通过运行 <strong>exit</strong> 命令或者使用 <strong>CTRL+D</strong> 来退出容器。</p>
+<h4 id="1-3-启动容器（后台形式）"><a href="#1-3-启动容器（后台形式）" class="headerlink" title="1.3 启动容器（后台形式）"></a>1.3 启动容器（后台形式）</h4><p>​            使用以下命令创建一个以进程方式运行的容器</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">runoob@runoob:~$ docker run -d ubuntu:15.10 /bin/sh -c &quot;while true; do echo hello world; sleep 1; done&quot;</span><br><span class="line">2b1b7a428627c51ab8810d541d759f072b4fc75487eed05812646b8534a2fe63</span><br></pre></td></tr></table></figure>
+
+<p>​            我们需要确认容器有在运行，可以通过 <strong>docker ps</strong> 来查看：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">runoob@runoob:~$ docker ps</span><br><span class="line">CONTAINER ID        IMAGE                  COMMAND              ...  </span><br><span class="line">5917eac21c36        ubuntu:15.10           &quot;/bin/sh -c &#x27;while t…&quot;    ...</span><br></pre></td></tr></table></figure>
+
+<p>​        输出详情介绍：</p>
+<p>​            <strong>CONTAINER ID:</strong> 容器 ID。</p>
+<p>​            <strong>IMAGE:</strong> 使用的镜像。</p>
+<p>​            <strong>COMMAND:</strong> 启动容器时运行的命令。</p>
+<p>​            <strong>CREATED:</strong> 容器的创建时间。</p>
+<p>​            <strong>STATUS:</strong> 容器状态。状态有7种：</p>
+<p>created（已创建）restarting（重启中）running 或 Up（运行中）removing（迁移中）</p>
+<p>paused（暂停）exited（停止）dead（死亡）</p>
+<p>​            <strong>PORTS:</strong> 容器的端口信息和使用的连接类型（tcp\udp）。</p>
+<p>​            <strong>NAMES:</strong> 自动分配的容器名称。</p>
+<p>​        在宿主主机内使用 <strong>docker logs</strong> 命令，查看容器内的标准输出：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">runoob@runoob:~$ docker logs 2b1b7a428627</span><br></pre></td></tr></table></figure>
+
+<p>​        我们使用 <strong>docker stop</strong> 命令来停止容器:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker stop &lt;id/name&gt;</span><br></pre></td></tr></table></figure>
+
+<h2 id="6、Docker容器的使用"><a href="#6、Docker容器的使用" class="headerlink" title="6、Docker容器的使用"></a>6、Docker容器的使用</h2><h3 id="1-客户端帮助文档"><a href="#1-客户端帮助文档" class="headerlink" title="1.客户端帮助文档"></a>1.客户端帮助文档</h3><p>​            直接输入 docker 命令来查看到 Docker 客户端的所有命令选项。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">runoob@runoob:~# docker</span><br></pre></td></tr></table></figure>
+
+<p>​            通过命令 <strong>docker command –help</strong> 更深入的了解指定的 Docker 命令使用方法。</p>
+<p>​    例如我们要查看 <strong>docker stats</strong> 指令的具体使用方法：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">runoob@runoob:~# docker stats --help</span><br></pre></td></tr></table></figure>
+
+<h3 id="2-Docker容器的使用（基本常用命令）"><a href="#2-Docker容器的使用（基本常用命令）" class="headerlink" title="2.Docker容器的使用（基本常用命令）"></a>2.Docker容器的使用（基本常用命令）</h3><p>​            <strong>获取镜像</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker pull ubuntu</span><br></pre></td></tr></table></figure>
+
+<p>​            <strong>启动容器</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker run -it ubuntu /bin/bash</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><strong>-i</strong>: 交互式操作。</li>
+<li><strong>-t</strong>: 终端。</li>
+<li><strong>ubuntu</strong>: ubuntu 镜像。</li>
+<li><strong>&#x2F;bin&#x2F;bash</strong>：放在镜像名后的是命令，这里我们希望有个交互式 Shell，因此用的是 &#x2F;bin&#x2F;bash。</li>
+</ul>
+<p>​            <strong>查看所有的容器命令如下：</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ docker ps -a</span><br></pre></td></tr></table></figure>
+
+<p>​            <strong>启动一个已停止的容器：</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ docker start b750bbbcfd88 </span><br></pre></td></tr></table></figure>
+
+<p>​            <strong>后台运行</strong></p>
+<p>​    在大部分的场景下，我们希望 docker 的服务是在后台运行的，我们可以过 <strong>-d</strong> 指定容器的运行模式。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ docker run -itd --name ubuntu-test ubuntu /bin/bash</span><br></pre></td></tr></table></figure>
+
+<p>​    <strong>注：</strong>加了 <strong>-d</strong> 参数默认不会进入容器，想要进入容器需要使用指令 <strong>docker exec</strong></p>
+<p>​            <strong>exec 命令</strong></p>
+<p>​    下面演示了使用 docker exec 命令。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker exec -it 243c32535da7 /bin/bash</span><br></pre></td></tr></table></figure>
+
+<p>​    <strong>注意：</strong> 如果从这个容器退出，容器不会停止</p>
+<p>​        <strong>停止一个容器</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ docker stop &lt;容器 ID&gt;</span><br></pre></td></tr></table></figure>
+
+<p>​        <strong>停止的容器可以通过 docker restart 重启：</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ docker restart &lt;容器 ID&gt;</span><br></pre></td></tr></table></figure>
+
+<p>​        <strong>进入容器</strong></p>
+<p>在使用 <strong>-d</strong> 参数时，容器启动后会进入后台。此时想要进入容器，可以通过以下指令进入：</p>
+<ul>
+<li><strong>docker attach</strong></li>
+<li><strong>docker exec</strong>：推荐大家使用 docker exec 命令，因为此退出容器终端，不会导致容器的停止。</li>
+</ul>
+<p>​    <strong>attach 命令</strong></p>
+<p>​    下面演示了使用 docker attach 命令。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ docker attach 1e560fca3906 </span><br></pre></td></tr></table></figure>
+
+<p><strong>注意：</strong> 如果从这个容器退出，会导致容器的停止。</p>
+<p>​    <strong>exec 命令</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker exec -it 243c32535da7 /bin/bash</span><br></pre></td></tr></table></figure>
+
+<p><strong>注意：</strong> 如果从这个容器退出，容器不会停止，推荐大家使用 <strong>docker exec</strong> 。</p>
+<p>​    <strong>导出容器</strong></p>
+<p>如果要导出本地某个容器，可以使用 <strong>docker export</strong> 命令。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ docker export 1e560fca3906 &gt; ubuntu.tar</span><br></pre></td></tr></table></figure>
+
+<p>导出容器 1e560fca3906 快照到本地文件 ubuntu.tar。这样将导出容器快照到本地文件。</p>
+<p>​    <strong>导入容器快照</strong></p>
+<p>可以使用 docker import 从容器快照文件中再导入为镜像，以下实例将快照文件 ubuntu.tar 导入到镜像 test&#x2F;ubuntu:v1:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ cat docker/ubuntu.tar | docker import - test/ubuntu:v1</span><br></pre></td></tr></table></figure>
+
+<p>此外，也可以通过指定 URL 或者某个目录来导入，例如：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ docker import http://example.com/exampleimage.tgz example/imagerepo</span><br></pre></td></tr></table></figure>
+
+<p>​    <strong>删除容器</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ docker rm -f 1e560fca3906</span><br></pre></td></tr></table></figure>
+
+<p>下面的命令可以清理掉所有处于终止状态的容器。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ docker container prune</span><br></pre></td></tr></table></figure>
+
+<h3 id="3-运行一个web应用"><a href="#3-运行一个web应用" class="headerlink" title="3.运行一个web应用"></a>3.运行一个web应用</h3><p>​    <strong>目标：</strong>我们将在docker容器中运行一个 Python Flask 应用来运行一个web应用。</p>
+<p>​    <strong>导入镜像，运行容器</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">runoob@runoob:~# docker pull training/webapp  # 载入镜像</span><br><span class="line">runoob@runoob:~# docker run -d -P training/webapp python app.py</span><br></pre></td></tr></table></figure>
+
+<p>参数说明:</p>
+<ul>
+<li>**-d:**让容器在后台运行。</li>
+<li>**-P:**将容器内部使用的网络端口随机映射到我们使用的主机上。</li>
+</ul>
+<p>这里多了端口信息。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">PORTS</span><br><span class="line">0.0.0.0:32769-&gt;5000/tcp</span><br></pre></td></tr></table></figure>
+
+<p>Docker 开放了 5000 端口（默认 Python Flask 端口）映射到主机端口 32769 上。</p>
+<p>这时我们可以通过浏览器访问WEB应用（192.168.239.130：32769）。</p>
+<p>我们也可以通过 -p 参数来设置不一样的端口：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">runoob@runoob:~$ docker run -d -p 5000:5000 training/webapp python app.py</span><br></pre></td></tr></table></figure>
+
+<p>容器内部的 5000 端口映射到我们本地主机的 5000 端口上。</p>
+<p>使用 <strong>docker port</strong> 可以查看指定 （ID 或者名字）容器的某个确定端口映射到宿主机的端口号。</p>
+<p>​    <strong>查看 WEB 应用程序日志</strong></p>
+<p>docker logs [ID或者名字] 可以查看容器内部的标准输出。</p>
+<p>​    <strong>查看WEB应用程序容器的进程</strong></p>
+<p>我们还可以使用 docker top 来查看容器内部运行的进程</p>
+<p>​    <strong>检查 WEB 应用程序</strong></p>
+<p>使用 <strong>docker inspect</strong> 来查看 Docker 的底层信息。它会返回一个 JSON 文件记录着 Docker 容器的配置和状态信息。</p>
+<p>​    <strong>停止 WEB 应用容器</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">runoob@runoob:~$ docker stop wizardly_chandrasekhar   </span><br><span class="line">wizardly_chandrasekhar</span><br></pre></td></tr></table></figure>
+
+<p>​    <strong>重启WEB应用容器</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">runoob@runoob:~$ docker start wizardly_chandrasekhar</span><br><span class="line">wizardly_chandrasekhar</span><br></pre></td></tr></table></figure>
+
+<p>​    <strong>移除WEB应用容器</strong></p>
+<p>我们可以使用 docker rm 命令来删除不需要的容器</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">runoob@runoob:~$ docker rm wizardly_chandrasekhar  </span><br><span class="line">wizardly_chandrasekhar</span><br></pre></td></tr></table></figure>
+
+<p>删除容器时，容器必须是停止状态。</p>
+<h2 id="7、Docker镜像使用"><a href="#7、Docker镜像使用" class="headerlink" title="7、Docker镜像使用"></a>7、Docker镜像使用</h2><h3 id="1-管理和使用镜像"><a href="#1-管理和使用镜像" class="headerlink" title="1.管理和使用镜像"></a>1.管理和使用镜像</h3><h4 id="列出镜像列表"><a href="#列出镜像列表" class="headerlink" title="列出镜像列表"></a>列出镜像列表</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">runoob@runoob:~$ docker images </span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">REPOSITORY          TAG                 IMAGE ID            CREATED             SIZE</span><br><span class="line">ubuntu              14.04               90d5884b1ee0        5 days ago          188 MB</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><strong>REPOSITORY：</strong>表示镜像的仓库源</li>
+<li><strong>TAG：</strong>镜像的标签</li>
+<li><strong>IMAGE ID：</strong>镜像ID</li>
+<li><strong>CREATED：</strong>镜像创建时间</li>
+<li><strong>SIZE：</strong>镜像大小</li>
+</ul>
+<p>​        同一镜像可以有不同TAG，希望运行某TAG时：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">runoob@runoob:~$ docker run -t -i ubuntu:14.04 /bin/bash </span><br></pre></td></tr></table></figure>
+
+<h4 id="查找镜像"><a href="#查找镜像" class="headerlink" title="查找镜像"></a>查找镜像</h4><p>​    我们可以从 Docker Hub 网站来搜索镜像，Docker Hub 网址为： <strong><a target="_blank" rel="noopener" href="https://hub.docker.com/">https://hub.docker.com/</a></strong></p>
+<p>我们也可以使用 docker search 命令来搜索镜像。比如我们需要一个 httpd 的镜像来作为我们的 web 服务。我们可以通过 docker search 命令搜索 httpd 来寻找适合我们的镜像。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">runoob@runoob:~$  docker search httpd</span><br></pre></td></tr></table></figure>
+
+<h4 id="拖取镜像"><a href="#拖取镜像" class="headerlink" title="拖取镜像"></a>拖取镜像</h4><p>我们决定使用上图中的 httpd 官方版本的镜像，使用命令 docker pull 来下载镜像。</p>
+<h4 id="删除镜像"><a href="#删除镜像" class="headerlink" title="删除镜像"></a>删除镜像</h4><p>镜像删除使用 <strong>docker rmi</strong> 命令，比如我们删除 hello-world 镜像：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ docker rmi hello-world</span><br></pre></td></tr></table></figure>
+
+<h3 id="2-创建镜像"><a href="#2-创建镜像" class="headerlink" title="2.创建镜像"></a>2.创建镜像</h3><h4 id="更新镜像"><a href="#更新镜像" class="headerlink" title="更新镜像"></a>更新镜像</h4><p>在运行的容器内使用 <strong>apt-get update</strong> 命令进行更新。</p>
+<p>在完成操作之后，输入 exit 命令来退出这个容器。</p>
+<p>此时 ID 为 e218edb10161 的容器，是按我们的需求更改的容器。我们可以通过命令 docker commit 来提交容器副本。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">runoob@runoob:~$ docker commit -m=&quot;has update&quot; -a=&quot;runoob&quot; e218edb10161 runoob/ubuntu:v2</span><br><span class="line">sha256:70bf1840fd7c0d2d8ef0a42a817eb29f854c1af8f7c59fc03ac7bdee9545aff8</span><br></pre></td></tr></table></figure>
+
+<p>各个参数说明：</p>
+<ul>
+<li><strong>-m:</strong> 提交的描述信息</li>
+<li><strong>-a:</strong> 指定镜像作者</li>
+<li><strong>e218edb10161：</strong>容器 ID</li>
+<li><strong>runoob&#x2F;ubuntu:v2:</strong> 指定要创建的目标镜像名</li>
+</ul>
+<h4 id="构建镜像"><a href="#构建镜像" class="headerlink" title="构建镜像"></a>构建镜像</h4><p>我们使用命令 <strong>docker build</strong> ， 从零开始来创建一个新的镜像。为此，我们需要创建一个 Dockerfile 文件，其中包含一组指令来告诉 Docker 如何构建我们的镜像。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">runoob@runoob:~$ cat Dockerfile </span><br><span class="line">FROM    centos:6.795 </span><br><span class="line">MAINTAINER      Fisher &quot;fisher@sudops.com&quot;</span><br><span class="line"></span><br><span class="line">RUN     /bin/echo &#x27;root:123456&#x27; |chpasswd</span><br><span class="line">RUN     useradd runoob</span><br><span class="line">RUN     /bin/echo &#x27;runoob:123456&#x27; |chpasswd</span><br><span class="line">RUN     /bin/echo -e &quot;LANG=\&quot;en_US.UTF-8\&quot;&quot; &gt;/etc/default/local</span><br><span class="line">EXPOSE  22</span><br><span class="line">EXPOSE  80</span><br><span class="line">CMD     /usr/sbin/sshd -D</span><br></pre></td></tr></table></figure>
+
+<p>每一个指令都会在镜像上创建一个新的层，每一个指令的前缀都必须是大写的。</p>
+<p>第一条FROM，指定使用哪个镜像源</p>
+<p>RUN 指令告诉docker 在镜像内执行命令，安装了什么。。。</p>
+<p>然后，我们使用 Dockerfile 文件，通过 docker build 命令来构建一个镜像。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">runoob@runoob:~$ docker build -t runoob/centos:6.7 .</span><br><span class="line">Sending build context to Docker daemon 17.92 kB</span><br></pre></td></tr></table></figure>
+
+<p>参数说明：</p>
+<ul>
+<li><strong>-t</strong> ：指定要创建的目标镜像名</li>
+<li><strong>.</strong> ：Dockerfile 文件所在目录，可以指定Dockerfile 的绝对路径</li>
+</ul>
+<h4 id="设置镜像标签"><a href="#设置镜像标签" class="headerlink" title="设置镜像标签"></a>设置镜像标签</h4><p>我们可以使用 docker tag 命令，为镜像添加一个新的标签。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">runoob@runoob:~$ docker tag 860c279d2fec runoob/centos:dev</span><br></pre></td></tr></table></figure>
+
+<h2 id="7、Docker容器连接"><a href="#7、Docker容器连接" class="headerlink" title="7、Docker容器连接"></a>7、Docker容器连接</h2><h3 id="1-网络端口映射"><a href="#1-网络端口映射" class="headerlink" title="1.网络端口映射"></a>1.网络端口映射</h3><ul>
+<li><strong>-P :<strong>是容器内部端口</strong>随机</strong>映射到主机的端口。</li>
+<li><strong>-p :</strong> 是容器内部端口绑定到<strong>指定</strong>的主机端口。</li>
+</ul>
+<p>​    实例：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">runoob@runoob:~$ docker run -d -p 5000:5000 training/webapp python app.py</span><br><span class="line">33e4523d30aaf0258915c368e66e03b49535de0ef20317d3f639d40222ba6bc0</span><br></pre></td></tr></table></figure>
+
+<p>​    我们可以指定容器绑定的网络地址，比如绑定 127.0.0.1，如果要绑定 UDP 端口，可以在端口后面加上 <strong>&#x2F;udp</strong>。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">runoob@runoob:~$ docker run -d -p 127.0.0.1:5001:5000 training/webapp python app.py</span><br><span class="line">95c6ceef88ca3e71eaf303c2833fd6701d8d1b2572b5613b5a932dfdfe8a857c</span><br></pre></td></tr></table></figure>
+
+<p>​    <strong>docker port</strong> 命令可以让我们快捷地查看端口的绑定情况。</p>
+<h3 id="2-容器互联"><a href="#2-容器互联" class="headerlink" title="2.容器互联"></a>2.容器互联</h3><h4 id="容器命名："><a href="#容器命名：" class="headerlink" title="容器命名："></a>容器命名：</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">runoob@runoob:~$  docker run -d -P --name runoob training/webapp python app.py</span><br></pre></td></tr></table></figure>
+
+<h4 id="新建网络："><a href="#新建网络：" class="headerlink" title="新建网络："></a>新建网络：</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ docker network create -d bridge test-net</span><br></pre></td></tr></table></figure>
+
+<p>​        <strong>-d</strong>：参数指定 Docker 网络类型，有 bridge、overlay。</p>
+<h4 id="连接容器"><a href="#连接容器" class="headerlink" title="连接容器:"></a>连接容器:</h4><p>​        运行一个容器并连接到新建的 test-net 网络:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ docker run -itd --name test1 --network test-net ubuntu /bin/bash</span><br></pre></td></tr></table></figure>
+
+<p>​        打开新的终端，再运行一个容器并加入到 test-net 网络:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ docker run -itd --name test2 --network test-net ubuntu /bin/bash</span><br></pre></td></tr></table></figure>
+
+<h4 id="ping-证明容器test1-和-test2-建立了互联关系"><a href="#ping-证明容器test1-和-test2-建立了互联关系" class="headerlink" title="ping 证明容器test1 和 test2 建立了互联关系:"></a>ping 证明容器test1 和 test2 建立了互联关系:</h4><p>​        如果 test1、test2 容器内中无 ping 命令，则在容器内执行以下命令安装 ping（即学即用：可以在一个容器里安装好，提交容器到镜像，在以新的镜像重新运行以上俩个容器）。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">apt-get update</span><br><span class="line">apt install iputils-ping</span><br></pre></td></tr></table></figure>
+
+<p>​        即学即用：可以在一个容器里安装好，提交容器到镜像，在以新的镜像重新运行以上俩个容器。</p>
+<p>分别在test1中执行    <strong>ping test2</strong>    和    <strong>ping test1</strong>    检测连接。</p>
+<h2 id="8、Docker仓库管理"><a href="#8、Docker仓库管理" class="headerlink" title="8、Docker仓库管理"></a>8、Docker仓库管理</h2><p>​    <strong>登录：(DockerHub账号)</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker login</span><br></pre></td></tr></table></figure>
+
+<p>​    <strong>退出：</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker logout</span><br></pre></td></tr></table></figure>
+
+<p>​    <strong>拉去镜像到本地仓库：</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker pull ubuntu</span><br></pre></td></tr></table></figure>
+
+<p>​    <strong>推送镜像到GitHub：</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker tag ubuntu:latset 15037846951/diy_name</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker push 15037846951/diy_name</span><br></pre></td></tr></table></figure>
+
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://example.com/2022/04/04/Docker/" data-id="cl1khe7gc0000z4w6do8aesvi" data-title="" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+
+  
     <article id="post-Hexo-learn" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
   <div class="article-meta">
     <a href="/2022/03/16/Hexo-learn/" class="article-date">
@@ -235,7 +770,7 @@ git config --global user.email &quot;youremail&quot;
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://example.com/2022/03/16/Hexo-learn/" data-id="cl135iuec0000bww643h95iwi" data-title="" class="article-share-link">Share</a>
+      <a data-url="http://example.com/2022/03/16/Hexo-learn/" data-id="cl1khe7gn0002z4w6d1ze458v" data-title="" class="article-share-link">Share</a>
       
       
       
@@ -286,7 +821,7 @@ git config --global user.email &quot;youremail&quot;
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://example.com/2022/03/14/hello-world/" data-id="cl135iufd0001bww6c1lva09b" data-title="Hello World" class="article-share-link">Share</a>
+      <a data-url="http://example.com/2022/03/14/hello-world/" data-id="cl1khe7gp0003z4w6brdy8m9c" data-title="Hello World" class="article-share-link">Share</a>
       
       
       
@@ -316,7 +851,7 @@ git config --global user.email &quot;youremail&quot;
   <div class="widget-wrap">
     <h3 class="widget-title">Archives</h3>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/03/">March 2022</a></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/04/">April 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/03/">March 2022</a></li></ul>
     </div>
   </div>
 
@@ -327,6 +862,18 @@ git config --global user.email &quot;youremail&quot;
     <h3 class="widget-title">Recent Posts</h3>
     <div class="widget">
       <ul>
+        
+          <li>
+            <a href="/2022/04/04/Spring%E6%B3%A8%E8%A7%A3/">(no title)</a>
+          </li>
+        
+          <li>
+            <a href="/2022/04/04/Docker%E6%80%BB%E7%BB%93/">(no title)</a>
+          </li>
+        
+          <li>
+            <a href="/2022/04/04/Docker/">(no title)</a>
+          </li>
         
           <li>
             <a href="/2022/03/16/Hexo-learn/">(no title)</a>

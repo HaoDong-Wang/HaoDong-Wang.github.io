@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  
+  <title>Hexo</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="Spring注解(annotation) 它可以充分利用 Java 的反射机制获取类结构信息，这些信息可以有效减少配置的工作。如使用 JPA 注释配置 ORM 映射时，我们就不需要指定 PO 的属性名、类型等信息，如果关系表字段和 PO 属性名、类型都一致，您甚至无需编写任务属性映射信息——因为这些信息都可以通过 Java 反射机制获取。 注释和 Java 代码位于一个文件中，而 XML 配置采用">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Hexo">
+<meta property="og:url" content="http://example.com/2022/04/04/Spring%E6%B3%A8%E8%A7%A3/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="Spring注解(annotation) 它可以充分利用 Java 的反射机制获取类结构信息，这些信息可以有效减少配置的工作。如使用 JPA 注释配置 ORM 映射时，我们就不需要指定 PO 的属性名、类型等信息，如果关系表字段和 PO 属性名、类型都一致，您甚至无需编写任务属性映射信息——因为这些信息都可以通过 Java 反射机制获取。 注释和 Java 代码位于一个文件中，而 XML 配置采用">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2022-04-04T08:59:06.039Z">
+<meta property="article:modified_time" content="2022-04-03T01:29:12.775Z">
+<meta property="article:author" content="John Doe">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+    
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/typeface-source-code-pro@0.0.71/index.min.css">
+
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+<meta name="generator" content="Hexo 6.1.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Hexo</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://example.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main"><article id="post-Spring注解" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2022/04/04/Spring%E6%B3%A8%E8%A7%A3/" class="article-date">
+  <time class="dt-published" datetime="2022-04-04T08:59:06.039Z" itemprop="datePublished">2022-04-04</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h1 id="Spring注解-annotation"><a href="#Spring注解-annotation" class="headerlink" title="Spring注解(annotation)"></a>Spring注解(annotation)</h1><ul>
+<li>它可以充分利用 Java 的反射机制获取类结构信息，<strong>这些信息可以有效减少配置的工作</strong>。如使用 JPA 注释配置 ORM 映射时，我们就不需要指定 PO 的属性名、类型等信息，如果关系表字段和 PO 属性名、类型都一致，您甚至无需编写任务属性映射信息——因为这些信息都可以通过 Java 反射机制获取。</li>
+<li>注释和 Java 代码位于一个文件中，而 XML 配置采用独立的配置文件，大多数<strong>配置信息在程序开发完成后都不会调整</strong>。而采用注释和配置文件在 XML 配置文件中，程序员在编写一个功能时，往往需要在程序文件和配置文件中不停切换，这种思维上的不连贯会降低开发效率。</li>
+</ul>
+<h2 id="目标"><a href="#目标" class="headerlink" title="目标"></a>目标</h2><p>​    <strong>在 Spring 容器中将 Office 和 Car 声明为 Bean，并注入到 Boss Bean 中</strong></p>
+<h2 id="原本的模式"><a href="#原本的模式" class="headerlink" title="原本的模式"></a>原本的模式</h2><p>三个类：Office、Car、Boss</p>
+<h3 id="Office："><a href="#Office：" class="headerlink" title="Office："></a>Office：</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">package</span> com.baobaotao;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">Office</span> &#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="type">String</span> <span class="variable">officeNo</span> <span class="operator">=</span>”<span class="number">001</span>”;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//省略 get/setter</span></span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> String <span class="title function_">toString</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="string">&quot;officeNo:&quot;</span> + officeNo;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="Car："><a href="#Car：" class="headerlink" title="Car："></a>Car：</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">package</span> com.baobaotao;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">Car</span> &#123;</span><br><span class="line">    <span class="keyword">private</span> String brand;</span><br><span class="line">    <span class="keyword">private</span> <span class="type">double</span> price;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 省略 get/setter</span></span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> String <span class="title function_">toString</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="string">&quot;brand:&quot;</span> + brand + <span class="string">&quot;,&quot;</span> + <span class="string">&quot;price:&quot;</span> + price;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="Boss-拥有Car和Office-："><a href="#Boss-拥有Car和Office-：" class="headerlink" title="Boss(拥有Car和Office)："></a>Boss(拥有Car和Office)：</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">                </span><br><span class="line"><span class="keyword">package</span> com.baobaotao;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">Boss</span> &#123;</span><br><span class="line">    <span class="keyword">private</span> Car car;</span><br><span class="line">    <span class="keyword">private</span> Office office;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 省略 get/setter</span></span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="keyword">public</span> String <span class="title function_">toString</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="string">&quot;car:&quot;</span> + car + <span class="string">&quot;\n&quot;</span> + <span class="string">&quot;office:&quot;</span> + office;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="Beans-xml-："><a href="#Beans-xml-：" class="headerlink" title="Beans.xml ："></a>Beans.xml ：</h3><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?xml version=<span class="string">&quot;1.0&quot;</span> encoding=<span class="string">&quot;UTF-8&quot;</span> ?&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">beans</span> <span class="attr">xmlns</span>=<span class="string">&quot;http://www.springframework.org/schema/beans&quot;</span></span></span><br><span class="line"><span class="tag">	<span class="attr">xmlns:xsi</span>=<span class="string">&quot;http://www.w3.org/2001/XMLSchema-instance&quot;</span></span></span><br><span class="line"><span class="tag">	<span class="attr">xsi:schemaLocation</span>=<span class="string">&quot;http://www.springframework.org/schema/beans </span></span></span><br><span class="line"><span class="string"><span class="tag"> http://www.springframework.org/schema/beans/spring-beans-2.5.xsd&quot;</span>&gt;</span></span><br><span class="line">    </span><br><span class="line">    <span class="comment">&lt;!--注解装配--&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">bean</span> <span class="attr">id</span>=<span class="string">&quot;boss&quot;</span> <span class="attr">class</span>=<span class="string">&quot;com.baobaotao.Boss&quot;</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">&quot;car&quot;</span> <span class="attr">ref</span>=<span class="string">&quot;car&quot;</span>/&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">&quot;office&quot;</span> <span class="attr">ref</span>=<span class="string">&quot;office&quot;</span> /&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">bean</span>&gt;</span></span><br><span class="line">    </span><br><span class="line">    <span class="tag">&lt;<span class="name">bean</span> <span class="attr">id</span>=<span class="string">&quot;office&quot;</span> <span class="attr">class</span>=<span class="string">&quot;com.baobaotao.Office&quot;</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">&quot;officeNo&quot;</span> <span class="attr">value</span>=<span class="string">&quot;002&quot;</span>/&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">bean</span>&gt;</span></span><br><span class="line">    </span><br><span class="line">    <span class="tag">&lt;<span class="name">bean</span> <span class="attr">id</span>=<span class="string">&quot;car&quot;</span> <span class="attr">class</span>=<span class="string">&quot;com.baobaotao.Car&quot;</span> <span class="attr">scope</span>=<span class="string">&quot;singleton&quot;</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">&quot;brand&quot;</span> <span class="attr">value</span>=<span class="string">&quot; 红旗 CA72&quot;</span>/&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">&quot;price&quot;</span> <span class="attr">value</span>=<span class="string">&quot;2000&quot;</span>/&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">bean</span>&gt;</span></span><br><span class="line">    </span><br><span class="line"><span class="tag">&lt;/<span class="name">beans</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="Test："><a href="#Test：" class="headerlink" title="Test："></a>Test：</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> org.springframework.context.ApplicationContext;</span><br><span class="line"><span class="keyword">import</span> org.springframework.context.support.ClassPathXmlApplicationContext;</span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">AnnoIoCTest</span> &#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> &#123;</span><br><span class="line">        String[] locations = &#123;<span class="string">&quot;beans.xml&quot;</span>&#125;;</span><br><span class="line">        <span class="type">ApplicationContext</span> <span class="variable">ctx</span> <span class="operator">=</span> </span><br><span class="line">		    <span class="keyword">new</span> <span class="title class_">ClassPathXmlApplicationContext</span>(locations);</span><br><span class="line">        <span class="type">Boss</span> <span class="variable">boss</span> <span class="operator">=</span> (Boss) ctx.getBean(<span class="string">&quot;boss&quot;</span>);</span><br><span class="line">        System.out.println(boss);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="使用-Autowired-注释："><a href="#使用-Autowired-注释：" class="headerlink" title="使用 @Autowired 注释："></a>使用 @Autowired 注释：</h2><h3 id="对类"><a href="#对类" class="headerlink" title="对类"></a>对类</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">                </span><br><span class="line"><span class="keyword">package</span> com.baobaotao;</span><br><span class="line"><span class="keyword">import</span> org.springframework.beans.factory.annotation.Autowired;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">Boss</span> &#123;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Autowired</span></span><br><span class="line">    <span class="keyword">private</span> Car car;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Autowired</span></span><br><span class="line">    <span class="keyword">private</span> Office office;</span><br><span class="line"></span><br><span class="line">    …</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>Spring 通过一个 <code>BeanPostProcessor</code> 对 <code>@Autowired</code> 进行解析，所以要让<code>@Autowired</code> 起作用必须事先在 Spring 容器中声明 <code>AutowiredAnnotationBeanPostProcessor</code> Bean。</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?xml version=<span class="string">&quot;1.0&quot;</span> encoding=<span class="string">&quot;UTF-8&quot;</span> ?&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">beans</span> <span class="attr">xmlns</span>=<span class="string">&quot;http://www.springframework.org/schema/beans&quot;</span></span></span><br><span class="line"><span class="tag">    <span class="attr">xmlns:xsi</span>=<span class="string">&quot;http://www.w3.org/2001/XMLSchema-instance&quot;</span></span></span><br><span class="line"><span class="tag">    <span class="attr">xsi:schemaLocation</span>=<span class="string">&quot;http://www.springframework.org/schema/beans </span></span></span><br><span class="line"><span class="string"><span class="tag"> http://www.springframework.org/schema/beans/spring-beans-2.5.xsd&quot;</span>&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">&lt;!-- 该 BeanPostProcessor 将自动起作用，对标注 @Autowired 的 Bean 进行自动注入 --&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">bean</span> <span class="attr">class</span>=<span class="string">&quot;org.springframework.beans.factory.annotation.</span></span></span><br><span class="line"><span class="string"><span class="tag">        AutowiredAnnotationBeanPostProcessor&quot;</span>/&gt;</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">&lt;!-- 移除 boss Bean 的属性注入配置的信息 --&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">bean</span> <span class="attr">id</span>=<span class="string">&quot;boss&quot;</span> <span class="attr">class</span>=<span class="string">&quot;com.baobaotao.Boss&quot;</span>/&gt;</span></span><br><span class="line">    </span><br><span class="line"> </span><br><span class="line">    <span class="tag">&lt;<span class="name">bean</span> <span class="attr">id</span>=<span class="string">&quot;office&quot;</span> <span class="attr">class</span>=<span class="string">&quot;com.baobaotao.Office&quot;</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">&quot;officeNo&quot;</span> <span class="attr">value</span>=<span class="string">&quot;001&quot;</span>/&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">bean</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">bean</span> <span class="attr">id</span>=<span class="string">&quot;car&quot;</span> <span class="attr">class</span>=<span class="string">&quot;com.baobaotao.Car&quot;</span> <span class="attr">scope</span>=<span class="string">&quot;singleton&quot;</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">&quot;brand&quot;</span> <span class="attr">value</span>=<span class="string">&quot; 红旗 CA72&quot;</span>/&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">&quot;price&quot;</span> <span class="attr">value</span>=<span class="string">&quot;2000&quot;</span>/&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">bean</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">beans</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>对成员变量使用<code>@Autowired</code> 后，可将它们的 setter 方法（<code>setCar()</code> 和 <code>setOffice()</code>）从 Boss 中删除。</strong></p>
+<p><strong>即删除property属性。</strong></p>
+<h3 id="对方法"><a href="#对方法" class="headerlink" title="对方法"></a>对方法</h3><p>原理与上述相同，只不过写的地方不同</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">                </span><br><span class="line"><span class="keyword">package</span> com.baobaotao;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">Boss</span> &#123;</span><br><span class="line">    <span class="keyword">private</span> Car car;</span><br><span class="line">    <span class="keyword">private</span> Office office;</span><br><span class="line"></span><br><span class="line">     <span class="meta">@Autowired</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">setCar</span><span class="params">(Car car)</span> &#123;</span><br><span class="line">        <span class="built_in">this</span>.car = car;</span><br><span class="line">    &#125;</span><br><span class="line"> </span><br><span class="line">    <span class="meta">@Autowired</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">setOffice</span><span class="params">(Office office)</span> &#123;</span><br><span class="line">        <span class="built_in">this</span>.office = office;</span><br><span class="line">    &#125;</span><br><span class="line">    …</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="对构造函数"><a href="#对构造函数" class="headerlink" title="对构造函数"></a>对构造函数</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">                </span><br><span class="line"><span class="keyword">package</span> com.baobaotao;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">Boss</span> &#123;</span><br><span class="line">    <span class="keyword">private</span> Car car;</span><br><span class="line">    <span class="keyword">private</span> Office office;</span><br><span class="line"> </span><br><span class="line">    <span class="meta">@Autowired</span></span><br><span class="line">    <span class="keyword">public</span> <span class="title function_">Boss</span><span class="params">(Car car ,Office office)</span>&#123;</span><br><span class="line">        <span class="built_in">this</span>.car = car;</span><br><span class="line">        <span class="built_in">this</span>.office = office ;</span><br><span class="line">    &#125;</span><br><span class="line"> </span><br><span class="line">    …</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>由于 <code>Boss()</code> 构造函数有两个入参，分别是 <code>car</code> 和 <code>office</code>，<code>@Autowired</code> 将分别寻找和它们类型匹配的 Bean，将它们作为<code>Boss(Car car ,Office office)</code> 的入参来创建 <code>Boss</code> Bean。</p>
+<h3 id="注意："><a href="#注意：" class="headerlink" title="注意："></a>注意：</h3><p>​    1、当<strong>找不到一个匹配的Bean时</strong>，抛出<code>BeanCreationException</code> 异常，可以在需要自动注入该类 Bean 的地方可以使用 **@Autowired(required &#x3D; false)**，这等于告诉 Spring：在找不到匹配 Bean 时也不报错。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">Boss</span> &#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> Car car;</span><br><span class="line">    <span class="keyword">private</span> Office office;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Autowired</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">setCar</span><span class="params">(Car car)</span> &#123;</span><br><span class="line">        <span class="built_in">this</span>.car = car;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="meta">@Autowired(required = false)</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">setOffice</span><span class="params">(Office office)</span> &#123;</span><br><span class="line">        <span class="built_in">this</span>.office = office;</span><br><span class="line">    &#125;</span><br><span class="line">    …</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>​        2、当<strong>同种类型的类出现多次时</strong>，抛出 <code>BeanCreationException</code> 异常，在 Spring 容器中配置了两个类型为 <code>Office</code> 类型的 Bean，当对 Boss 的 <code>office</code> 成员变量进行自动注入时，Spring 容器将无法确定到底要用哪一个 Bean，因此异常发生了。通过 <strong>@Qualifier</strong> 注释指定注入 Bean 的名称，这样歧义就消除了.</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">… </span><br><span class="line"><span class="comment">&lt;!--同种类型的类--&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">bean</span> <span class="attr">id</span>=<span class="string">&quot;office&quot;</span> <span class="attr">class</span>=<span class="string">&quot;com.baobaotao.Office&quot;</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">&quot;officeNo&quot;</span> <span class="attr">value</span>=<span class="string">&quot;001&quot;</span>/&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">bean</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">bean</span> <span class="attr">id</span>=<span class="string">&quot;office2&quot;</span> <span class="attr">class</span>=<span class="string">&quot;com.baobaotao.Office&quot;</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">&quot;officeNo&quot;</span> <span class="attr">value</span>=<span class="string">&quot;001&quot;</span>/&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">bean</span>&gt;</span></span><br><span class="line">…</span><br></pre></td></tr></table></figure>
+
+<p>​    对构造函数参数注释</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Autowired</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">setOffice</span><span class="params">(<span class="meta">@Qualifier(&quot;office&quot;)</span>Office office)</span> &#123;</span><br><span class="line">    <span class="built_in">this</span>.office = office;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>​    对成员变量</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Autowired</span></span><br><span class="line"><span class="meta">@Qualifier(&quot;office&quot;)</span></span><br><span class="line"><span class="keyword">private</span> Office office;</span><br></pre></td></tr></table></figure>
+
+<p><code>@Autowired</code> 和<code>@Qualifier</code> 结合使用时，自动注入的策略就从 byType 转变成 byName 了</p>
+<h2 id="使用-JSR-250-的注释"><a href="#使用-JSR-250-的注释" class="headerlink" title="使用 JSR-250 的注释"></a>使用 JSR-250 的注释</h2><h3 id="Resource-注释："><a href="#Resource-注释：" class="headerlink" title="@Resource 注释："></a>@Resource 注释：</h3><p>**<code>@Resource</code> 的作用相当于 <code>@Autowired</code>**，只不过 <code>@Autowired</code> 按 byType 自动注入，面<code>@Resource</code> 默认按 <strong>byName</strong> 自动注入罢了。</p>
+<p><code>@Resource</code> 有两个属性是比较重要的，分别是 <strong>name 和 type</strong>，Spring 将<code>@Resource</code> 注释的 name 属性解析为 Bean 的名字，而 type 属性则解析为 Bean 的类型。所以如果使用 name 属性，则使用 byName 的自动注入策略，而使用 type 属性时则使用 byType 自动注入策略。如果既不指定 name 也不指定 type 属性，这时将通过反射机制使用 <strong>byName</strong> **(默认)**自动注入策略。</p>
+<p>Resource 注释类位于 Spring 发布包的 lib&#x2F;j2ee&#x2F;common-annotations.jar 类包中，因此在使用之前必须将其加入到项目的类库中。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">                </span><br><span class="line"><span class="keyword">package</span> com.baobaotao;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> javax.annotation.Resource;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">Boss</span> &#123;</span><br><span class="line">    <span class="comment">// 自动注入类型为 Car 的 Bean</span></span><br><span class="line">    <span class="meta">@Resource</span></span><br><span class="line">    <span class="keyword">private</span> Car car;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 自动注入 bean 名称为 office 的 Bean</span></span><br><span class="line">    <span class="meta">@Resource(name = &quot;office&quot;)</span></span><br><span class="line">    <span class="keyword">private</span> Office office;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>还需要在 Spring 容器中注册一个负责处理这些注释的 <code>BeanPostProcessor</code>：</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">bean</span> <span class="attr">class</span>=<span class="string">&quot;org.springframework.context.annotation.CommonAnnotationBeanPostProcessor&quot;</span>/&gt;</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="PostConstruct和-PreDestroy"><a href="#PostConstruct和-PreDestroy" class="headerlink" title="@PostConstruct和@PreDestroy"></a>@PostConstruct和@PreDestroy</h3><p>Spring 容器中的 Bean 是有<strong>生命周期</strong>的，Spring 允许在 Bean 在<strong>初始化完成后</strong>以及 Bean <strong>销毁前</strong>执行特定的操作，您既可以通过实现 <strong>InitializingBean&#x2F;DisposableBean</strong> 接口来定制初始化之后 &#x2F; 销毁之前的操作方法，也可以通过 <bean> 元素的 <strong>init-method&#x2F;destroy-method</strong> 属性指定初始化之后 &#x2F; 销毁之前调用的操作方法。</p>
+<p>JSR-250 为初始化之后&#x2F;销毁之前方法的指定定义了两个注释类，分别是 <strong>@PostConstruct 和 @PreDestroy</strong>，这两个注释只能应用于<strong>方法</strong>上。<strong>标注了 @PostConstruct 注释的方法将在类实例化后调用，而标注了 @PreDestroy 的方法将在类销毁之前调用。</strong></p>
+<p>使用方法：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">                </span><br><span class="line"><span class="keyword">package</span> com.baobaotao;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> javax.annotation.Resource;</span><br><span class="line"><span class="keyword">import</span> javax.annotation.PostConstruct;</span><br><span class="line"><span class="keyword">import</span> javax.annotation.PreDestroy;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">Boss</span> &#123;</span><br><span class="line">    <span class="meta">@Resource</span></span><br><span class="line">    <span class="keyword">private</span> Car car;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Resource(name = &quot;office&quot;)</span></span><br><span class="line">    <span class="keyword">private</span> Office office;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@PostConstruct</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">postConstruct1</span><span class="params">()</span>&#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;postConstruct1&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@PreDestroy</span></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">preDestroy1</span><span class="params">()</span>&#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;preDestroy1&quot;</span>); </span><br><span class="line">    &#125;</span><br><span class="line">    …</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>不管是通过实现 <code>InitializingBean</code>&#x2F;<code>DisposableBean</code> 接口，还是通过 <bean> 元素的<code>init-method/destroy-method</code> 属性进行配置，<strong>都只能为 Bean 指定一个初始化 &#x2F; 销毁的方法</strong>。但是使用 <code>@PostConstruct</code> 和 <code>@PreDestroy</code> 注释却<strong>可以指定多个初始化 &#x2F; 销毁方法</strong>，那些被标注 <code>@PostConstruct</code> 或 <code>@PreDestroy</code> 注释的方法都会在初始化 &#x2F; 销毁时被执行。</p>
+<p>测试代码：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.baobaotao;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> org.springframework.context.support.ClassPathXmlApplicationContext;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">AnnoIoCTest</span> &#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> &#123;</span><br><span class="line">        String[] locations = &#123;<span class="string">&quot;beans.xml&quot;</span>&#125;;</span><br><span class="line">        <span class="type">ClassPathXmlApplicationContext</span> <span class="variable">ctx</span> <span class="operator">=</span> </span><br><span class="line">            <span class="keyword">new</span> <span class="title class_">ClassPathXmlApplicationContext</span>(locations);</span><br><span class="line">        <span class="type">Boss</span> <span class="variable">boss</span> <span class="operator">=</span> (Boss) ctx.getBean(<span class="string">&quot;boss&quot;</span>);</span><br><span class="line">        System.out.println(boss);</span><br><span class="line">        ctx.destroy();<span class="comment">// 关闭 Spring 容器，以触发 Bean 销毁方法的执行</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="使用context-annotation-config简化配置"><a href="#使用context-annotation-config简化配置" class="headerlink" title="使用context:annotation-config简化配置"></a>使用<a href="context:annotation-config">context:annotation-config</a>简化配置</h2><p><strong>Spring 2.1 添加了一个新的 context 的 Schema 命名空间</strong>，该命名空间对<strong>注释驱动</strong>、<strong>属性文件引入</strong>、<strong>加载期织入</strong>等功能提供了便捷的配置。我们知道注释本身是不会做任何事情的，它仅提供元数据信息。要使元数据信息真正起作用，必须让负责处理这些元数据的处理器工作起来。</p>
+<p>而我们前面所介绍的 <code>AutowiredAnnotationBeanPostProcessor</code> 和 <code>CommonAnnotationBeanPostProcessor</code> 就是处理这些注释元数据的处理器。但是直接在 Spring 配置文件中定义这些 Bean 显得比较笨拙。Spring 为我们提供了一种方便的注册这些<code>BeanPostProcessor</code> 的方式。</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?xml version=<span class="string">&quot;1.0&quot;</span> encoding=<span class="string">&quot;UTF-8&quot;</span> ?&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">beans</span> <span class="attr">xmlns</span>=<span class="string">&quot;http://www.springframework.org/schema/beans&quot;</span></span></span><br><span class="line"><span class="tag">    <span class="attr">xmlns:xsi</span>=<span class="string">&quot;http://www.w3.org/2001/XMLSchema-instance&quot;</span></span></span><br><span class="line"><span class="tag">       </span></span><br><span class="line"><span class="tag">       &lt;!<span class="attr">--</span>声明 <span class="attr">context</span> 命名空间。<span class="attr">--</span>&gt;</span></span><br><span class="line">     xmlns:context=&quot;http://www.springframework.org/schema/context&quot;</span><br><span class="line"></span><br><span class="line">     xsi:schemaLocation=&quot;http://www.springframework.org/schema/beans </span><br><span class="line"> http://www.springframework.org/schema/beans/spring-beans-2.5.xsd</span><br><span class="line"></span><br><span class="line">	<span class="comment">&lt;!--声明 context 命名空间。--&gt;</span></span><br><span class="line"> http://www.springframework.org/schema/context </span><br><span class="line"> http://www.springframework.org/schema/context/spring-context-2.5.xsd&quot;&gt;</span><br><span class="line"> 	<span class="comment">&lt;!--&lt;context:annotation-config/&gt;隐式地向 Spring 容器注册BeanPostProcessor--&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">context:annotation-config</span>/&gt;</span> </span><br><span class="line"></span><br><span class="line">    <span class="tag">&lt;<span class="name">bean</span> <span class="attr">id</span>=<span class="string">&quot;boss&quot;</span> <span class="attr">class</span>=<span class="string">&quot;com.baobaotao.Boss&quot;</span>/&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">bean</span> <span class="attr">id</span>=<span class="string">&quot;office&quot;</span> <span class="attr">class</span>=<span class="string">&quot;com.baobaotao.Office&quot;</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">&quot;officeNo&quot;</span> <span class="attr">value</span>=<span class="string">&quot;001&quot;</span>/&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">bean</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">bean</span> <span class="attr">id</span>=<span class="string">&quot;car&quot;</span> <span class="attr">class</span>=<span class="string">&quot;com.baobaotao.Car&quot;</span> <span class="attr">scope</span>=<span class="string">&quot;singleton&quot;</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">&quot;brand&quot;</span> <span class="attr">value</span>=<span class="string">&quot; 红旗 CA72&quot;</span>/&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">property</span> <span class="attr">name</span>=<span class="string">&quot;price&quot;</span> <span class="attr">value</span>=<span class="string">&quot;2000&quot;</span>/&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">bean</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">beans</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p><strong><a href="context:annotationconfig/">context:annotationconfig/</a></strong> 将隐式地向 Spring 容器注册 <code>AutowiredAnnotationBeanPostProcessor</code>、<code>CommonAnnotationBeanPostProcessor</code>、<code>PersistenceAnnotationBeanPostProcessor</code> 以及<code>equiredAnnotationBeanPostProcessor</code> 这 4 个 BeanPostProcessor。</p>
+<p><strong>在配置文件中使用 context 命名空间之前，必须在 <beans> 元素中声明 context 命名空间。</strong></p>
+<h2 id="Component-注释"><a href="#Component-注释" class="headerlink" title="@Component 注释"></a><strong>@Component 注释</strong></h2><p>仅需要在类定义处，使用 <code>@Component</code> 注释就可以将一个类<strong>定义了 Spring 容器中的 Bean。</strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.baobaotao;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> org.springframework.stereotype.Component;</span><br><span class="line"></span><br><span class="line"><span class="meta">@Component</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">Car</span> &#123;</span><br><span class="line">    …</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.baobaotao;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> org.springframework.stereotype.Component;</span><br><span class="line"></span><br><span class="line"><span class="meta">@Component</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">Office</span> &#123;</span><br><span class="line">    <span class="keyword">private</span> <span class="type">String</span> <span class="variable">officeNo</span> <span class="operator">=</span> <span class="string">&quot;001&quot;</span>;</span><br><span class="line">    …</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>@Component 有一个可选的入参，用于指定 Bean 的名称，在 Boss 中，我们就将 Bean 名称定义为“<code>boss</code>”。一般情况下，Bean 都是 singleton 的，需要注入 Bean 的地方仅需要通过 byType 策略就可以自动注入了，所以大可不必指定 Bean 的名称。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.baobaotao;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> org.springframework.beans.factory.annotation.Autowired;</span><br><span class="line"><span class="keyword">import</span> org.springframework.beans.factory.annotation.Required;</span><br><span class="line"><span class="keyword">import</span> org.springframework.beans.factory.annotation.Qualifier;</span><br><span class="line"><span class="keyword">import</span> org.springframework.stereotype.Component;</span><br><span class="line"></span><br><span class="line"><span class="meta">@Component(&quot;boss&quot;)</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">Boss</span> &#123;</span><br><span class="line">    <span class="meta">@Autowired</span></span><br><span class="line">    <span class="keyword">private</span> Car car;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Autowired</span></span><br><span class="line">    <span class="keyword">private</span> Office office;</span><br><span class="line">    …</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>简化版的 beans.xml</strong></p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&lt;?xml version=<span class="string">&quot;1.0&quot;</span> encoding=<span class="string">&quot;UTF-8&quot;</span> ?&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">beans</span> <span class="attr">xmlns</span>=<span class="string">&quot;http://www.springframework.org/schema/beans&quot;</span></span></span><br><span class="line"><span class="tag">    <span class="attr">xmlns:xsi</span>=<span class="string">&quot;http://www.w3.org/2001/XMLSchema-instance&quot;</span></span></span><br><span class="line"><span class="tag">    <span class="attr">xmlns:context</span>=<span class="string">&quot;http://www.springframework.org/schema/context&quot;</span></span></span><br><span class="line"><span class="tag">    <span class="attr">xsi:schemaLocation</span>=<span class="string">&quot;http://www.springframework.org/schema/beans </span></span></span><br><span class="line"><span class="string"><span class="tag"> http://www.springframework.org/schema/beans/spring-beans-2.5.xsd</span></span></span><br><span class="line"><span class="string"><span class="tag"> http://www.springframework.org/schema/context </span></span></span><br><span class="line"><span class="string"><span class="tag"> http://www.springframework.org/schema/context/spring-context-2.5.xsd&quot;</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">context:component-scan</span> <span class="attr">base-package</span>=<span class="string">&quot;com.baobaotao&quot;</span>/&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">beans</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="扫描过滤"><a href="#扫描过滤" class="headerlink" title="扫描过滤"></a>扫描过滤</h2><p><a href="context:component-scan/">context:component-scan/</a> 的 <strong>base-package 属性指定了需要扫描的类包</strong>，类包及其递归子包中所有的类都会被处理。</p>
+<p><a href="context:component-scan/">context:component-scan/</a> <strong>还允许定义过滤器将基包下的某些类纳入或排除</strong>。Spring 支持以下 4 种类型的过滤方式，通过下表说明：</p>
+<table>
+<thead>
+<tr>
+<th align="left">过滤器类型</th>
+<th align="left">说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">注释</td>
+<td align="left">假如 com.baobaotao.SomeAnnotation 是一个注释类，我们可以将使用该注释的类过滤出来。</td>
+</tr>
+<tr>
+<td align="left">类名指定</td>
+<td align="left">通过全限定类名进行过滤，如您可以指定将 com.baobaotao.Boss 纳入扫描，而将 com.baobaotao.Car 排除在外。</td>
+</tr>
+<tr>
+<td align="left">正则表达式</td>
+<td align="left">通过正则表达式定义过滤的类，如下所示： com.baobaotao.Default.*</td>
+</tr>
+<tr>
+<td align="left">AspectJ 表达式</td>
+<td align="left">通过 AspectJ 表达式定义过滤的类，如下所示： com. baobaotao..*Service+</td>
+</tr>
+</tbody></table>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&lt;!--指定扫描com.baobaotao包下的service类，但不扫描util类--&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">context:component-scan</span> <span class="attr">base-package</span>=<span class="string">&quot;com.baobaotao&quot;</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">context:include-filter</span> <span class="attr">type</span>=<span class="string">&quot;regex&quot;</span> </span></span><br><span class="line"><span class="tag">        <span class="attr">expression</span>=<span class="string">&quot;com\.baobaotao.service\..*&quot;</span>/&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">context:exclude-filter</span> <span class="attr">type</span>=<span class="string">&quot;aspectj&quot;</span> </span></span><br><span class="line"><span class="tag">        <span class="attr">expression</span>=<span class="string">&quot;com.baobaotao.util..*&quot;</span>/&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">context:component-scan</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>值得注意的是 <a href="context:component-scan/">context:component-scan/</a> 配置项不但启用了对类包进行扫描以实施注释驱动 Bean 定义的功能，同时还启用了注释驱动自动注入的功能（即还隐式地在内部注册了<code>AutowiredAnnotationBeanPostProcessor</code> 和 <code>CommonAnnotationBeanPostProcessor</code>），<strong>因此当使用 <a href="context:component-scan/">context:component-scan/</a> 后，就可以将 <a href="context:annotation-config/">context:annotation-config/</a> 移除了。</strong></p>
+<h2 id="Scope-指定-Bean-的作用范围"><a href="#Scope-指定-Bean-的作用范围" class="headerlink" title="@Scope 指定 Bean 的作用范围"></a><strong>@Scope 指定 Bean 的作用范围</strong></h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">                </span><br><span class="line"><span class="keyword">package</span> com.baobaotao;</span><br><span class="line"><span class="keyword">import</span> org.springframework.context.annotation.Scope;</span><br><span class="line">…</span><br><span class="line"><span class="meta">@Scope(&quot;prototype&quot;)</span></span><br><span class="line"><span class="meta">@Component(&quot;boss&quot;)</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">Boss</span> &#123;</span><br><span class="line">    …</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这样，当从 Spring 容器中获取 <code>boss</code> Bean 时，每次返回的都是新的实例了。</p>
+<h2 id="Repository-Service-Controller"><a href="#Repository-Service-Controller" class="headerlink" title="@Repository @Service @Controller"></a>@Repository @Service @Controller</h2><p>Spring 2.5 中除了提供 <code>@Component</code> 注释外，还定义了几个拥有特殊语义的注释，它们分别是：<code>@Repository</code>、<code>@Service</code> 和<code>@Controller</code>。在目前的 Spring 版本中，<strong>这 3 个注释和 <code>@Component</code> 是等效的</strong>，但是从注释类的命名上，很容易看出<strong>这 3 个注释分别和持久层、业务层和控制层（Web 层）相对应</strong>。虽然目前这 3 个注释和<code>@Component</code> 相比没有什么新意，但 Spring 将在以后的版本中为它们添加特殊的功能。所以，如果 Web 应用程序采用了经典的三层分层结构的话，<strong>最好在持久层、业务层和控制层分别采用<code>@Repository</code>、<code>@Service</code> 和 <code>@Controller</code> 对分层中的类进行注释，而用<code>@Component</code> 对那些比较中立的类进行注释。</strong></p>
+<h2 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h2><p>1、@Component：将一个类定义在Spring 容器的 Bean中。</p>
+<p>​            @Component(“boss”)：用于指定 Bean 的名称，也可以省略。</p>
+<p>​            @Value(“热干面”)：用于给类的成员变量赋值。</p>
+<p>2、@Autowired：从容器中拿去需要的类，用于在类内用另一个类作为成员变量，可用在类、setter、构造函数。</p>
+<p>3、@Resource：与@Autowired作用相同。有name和type两种属性，可通过name和type拿去需要的类。</p>
+<p>4、@PostConstruct和@PreDestroy：标注了 @PostConstruct 注释的方法将在类实例化后调用，而标注了             @PreDestroy 的方法将在类销毁之前调用。</p>
+<p>5、简化配置</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&lt;!--声明 context 命名空间。--&gt;</span></span><br><span class="line"> xmlns:context=&quot;http://www.springframework.org/schema/context&quot;</span><br><span class="line"> http://www.springframework.org/schema/context </span><br><span class="line"> http://www.springframework.org/schema/context/spring-context-2.5.xsd&quot;&gt;</span><br><span class="line"></span><br><span class="line"><span class="comment">&lt;!--&lt;context:annotation-config/&gt;隐式地向 Spring 容器注册BeanPostProcessor--&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">context:annotation-config</span>/&gt;</span> </span><br></pre></td></tr></table></figure>
+
+<p>6、扫描过滤</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">&lt;!--指定扫描com.baobaotao包下的service类，但不扫描util类--&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">context:component-scan</span> <span class="attr">base-package</span>=<span class="string">&quot;com.baobaotao&quot;</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">context:include-filter</span> <span class="attr">type</span>=<span class="string">&quot;regex&quot;</span> </span></span><br><span class="line"><span class="tag">        <span class="attr">expression</span>=<span class="string">&quot;com\.baobaotao.service\..*&quot;</span>/&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">context:exclude-filter</span> <span class="attr">type</span>=<span class="string">&quot;aspectj&quot;</span> </span></span><br><span class="line"><span class="tag">        <span class="attr">expression</span>=<span class="string">&quot;com.baobaotao.util..*&quot;</span>/&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">context:component-scan</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>因此当使用 <a href="context:component-scan/">context:component-scan/</a> 后，就可以将 <a href="context:annotation-config/">context:annotation-config/</a> 移除了</p>
+<p>7、@Scope：指定 Bean 的作用范围。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Scope(&quot;prototype&quot;)</span><span class="comment">//多实例，IOC容器启动创建的时候，并不会创建对象放在容器在容器当中，当你需要的时候，需要从容器当中取该对象的时候，就会创建。</span></span><br><span class="line"><span class="meta">@Scope(&quot;singleton&quot;)</span><span class="comment">//单实例 IOC容器启动的时候就会调用方法创建对象，以后每次获取都是从容器当中拿同一个对象（map当中）。</span></span><br><span class="line"><span class="meta">@Scope(&quot;request&quot;)</span><span class="comment">//同一个请求创建一个实例</span></span><br><span class="line"><span class="meta">@Scope(&quot;session&quot;)</span><span class="comment">//同一个session创建一个实例</span></span><br></pre></td></tr></table></figure>
+
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://example.com/2022/04/04/Spring%E6%B3%A8%E8%A7%A3/" data-id="cl1khe7gq0004z4w6b4qs3vk3" data-title="" class="article-share-link">Share</a>
+      
+      
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+  
+    <a href="/2022/04/04/Docker%E6%80%BB%E7%BB%93/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title"></div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+
+  
+    
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/04/">April 2022</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2022/03/">March 2022</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2022/04/04/Spring%E6%B3%A8%E8%A7%A3/">(no title)</a>
+          </li>
+        
+          <li>
+            <a href="/2022/04/04/Docker%E6%80%BB%E7%BB%93/">(no title)</a>
+          </li>
+        
+          <li>
+            <a href="/2022/04/04/Docker/">(no title)</a>
+          </li>
+        
+          <li>
+            <a href="/2022/03/16/Hexo-learn/">(no title)</a>
+          </li>
+        
+          <li>
+            <a href="/2022/03/14/hello-world/">Hello World</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+      &copy; 2022 John Doe<br>
+      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+
+<script src="/js/jquery-3.4.1.min.js"></script>
+
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+
+  </div>
+</body>
+</html>
